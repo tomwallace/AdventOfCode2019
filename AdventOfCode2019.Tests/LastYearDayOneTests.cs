@@ -3,7 +3,7 @@ using Xunit;
 
 namespace AdventOfCode2019.Tests
 {
-    public class DayOneTests
+    public class LastYearDayOneTests
     {
         [Theory]
         [InlineData(@"LastYearOne\DayOneTestInputA.txt", 3)]

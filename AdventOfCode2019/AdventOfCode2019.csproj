@@ -55,6 +55,7 @@
     <Compile Include="Console\ICommand.cs" />
     <Compile Include="IAdventProblemSet.cs" />
     <Compile Include="LastYearOne\LastYearDayOne.cs" />
+    <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -84,6 +85,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LastYearOne\DayOneTestInputG.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="One\DayOneInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
