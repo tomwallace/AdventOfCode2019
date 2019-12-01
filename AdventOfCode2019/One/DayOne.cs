@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using AdventOfCode2019.Utility;
 
 namespace AdventOfCode2019.One
 {
@@ -57,7 +58,7 @@ namespace AdventOfCode2019.One
 
         private int SumFuelRequired(string filePath)
         {
-            List<int> masses = ParseForSplitInts(filePath);
+            List<int> masses = FileUtility.ParseFileToList(filePath, line => int.Parse(line.Trim()));
             int runningTotal = 0;
 
             foreach (int mass in masses)
@@ -71,7 +72,7 @@ namespace AdventOfCode2019.One
 
         private int SumAllFuelRequiredIncludingFuelForFuel(string filePath)
         {
-            List<int> masses = ParseForSplitInts(filePath);
+            List<int> masses = FileUtility.ParseFileToList(filePath, line => int.Parse(line.Trim()));
             int runningTotal = 0;
 
             foreach (int mass in masses)
@@ -81,21 +82,6 @@ namespace AdventOfCode2019.One
             }
 
             return runningTotal;
-        }
-
-        private List<int> ParseForSplitInts(string filePath)
-        {
-            List<int> splitInts = new List<int>();
-            string line;
-            StreamReader file = new StreamReader(filePath);
-
-            // Iterate over each line in the input
-            while ((line = file.ReadLine()) != null)
-            {
-                splitInts.Add(int.Parse(line.Trim()));
-            }
-            file.Close();
-            return splitInts;
         }
     }
 }
