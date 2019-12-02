@@ -58,6 +58,8 @@
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Two\DayTwo.cs" />
+    <Compile Include="Two\IntCodeProgram.cs" />
     <Compile Include="Utility\FileUtility.cs" />
   </ItemGroup>
   <ItemGroup>
