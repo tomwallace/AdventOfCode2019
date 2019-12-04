@@ -53,6 +53,12 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
+    <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
+    <Compile Include="Four\CorrectDigits.cs" />
+    <Compile Include="Four\DayFour.cs" />
+    <Compile Include="Four\DuplicateDigit.cs" />
+    <Compile Include="Four\DuplicateDigitExcludeTriple.cs" />
+    <Compile Include="Four\IPassportRule.cs" />
     <Compile Include="IAdventProblemSet.cs" />
     <Compile Include="LastYearOne\LastYearDayOne.cs" />
     <Compile Include="One\DayOne.cs" />
