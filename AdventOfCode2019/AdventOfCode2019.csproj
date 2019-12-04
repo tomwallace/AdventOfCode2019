@@ -58,6 +58,10 @@
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Three\Coordinate.cs" />
+    <Compile Include="Three\CoordinateComparer.cs" />
+    <Compile Include="Three\DayThree.cs" />
+    <Compile Include="Three\Wire.cs" />
     <Compile Include="Two\DayTwo.cs" />
     <Compile Include="Two\IntCodeProgram.cs" />
     <Compile Include="Utility\FileUtility.cs" />
