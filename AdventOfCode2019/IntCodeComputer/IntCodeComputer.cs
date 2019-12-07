@@ -4,31 +4,29 @@ using System.Linq;
 
 namespace AdventOfCode2019.IntCodeComputer
 {
-    // TODO: Refactor this class, around references to "pointed values"
     // TODO: Pull instructions out into their own classes
-    // TODO: Write tests for DayFive
     // An Intcode program is a list of integers separated by commas (like 1,0,0,3,99).
     public class IntCodeComputer
     {
-        private Dictionary<int, Instruction> _memory;
+        private Dictionary<int, int> _memory;
         private int _instructionPointer;
 
         private int? _noun;
         private int? _verb;
 
         private int? _input;
-        private List<int> _output;
+        private int _output;
 
         // Construct an IntCodeProgram from a memoryInput string and noun and verb modifiers
         public IntCodeComputer(string memoryInput, int? noun, int? verb)
         {
-            _memory = new Dictionary<int, Instruction>();
+            _memory = new Dictionary<int, int>();
             SplitInputIntoMemory(memoryInput, noun, verb);
             _noun = noun;
             _verb = verb;
             _input = null;
 
-            _output = new List<int>();
+            _output = 0;
 
             _instructionPointer = 0;
         }
@@ -36,13 +34,13 @@ namespace AdventOfCode2019.IntCodeComputer
         // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb
         public IntCodeComputer(string memoryInput, int? input)
         {
-            _memory = new Dictionary<int, Instruction>();
+            _memory = new Dictionary<int, int>();
             SplitInputIntoMemory(memoryInput, null, null);
             _noun = null;
             _verb = null;
             _input = input;
 
-            _output = new List<int>();
+            _output = 0;
 
             _instructionPointer = 0;
         }
@@ -59,7 +57,7 @@ namespace AdventOfCode2019.IntCodeComputer
 
         public int GetDiagnosticCode()
         {
-            return _output.Last();
+            return _output;
         }
 
         // Processes the instructions in memory by moving through each instruction and its parameters
@@ -68,90 +66,191 @@ namespace AdventOfCode2019.IntCodeComputer
             bool finished = false;
             do
             {
-                switch (_memory[_instructionPointer].GetRawValue())
+                int currentValue = _memory[_instructionPointer];
+                if (currentValue == 99)
                 {
-                    case 1:
-                        InstructionOneAddition();
-                        // Step forward
-                        _instructionPointer += 4;
-                        break;
+                    finished = true;
+                }
+                else
+                {
+                    // Work with just the first two digits of the current value
+                    switch (_memory[_instructionPointer] % 10)
+                    {
+                        case 1:
+                            InstructionOneAddition(_memory[_instructionPointer]);
+                            break;
 
-                    case 2:
-                        InstructionTwoMultiplication();
-                        // Step forward
-                        _instructionPointer += 4;
-                        break;
+                        case 2:
+                            InstructionTwoMultiplication(_memory[_instructionPointer]);
+                            break;
 
-                    case 3:
-                        InstructionThreeSaveInput();
-                        // Step forward
-                        _instructionPointer += 2;
-                        break;
+                        case 3:
+                            InstructionThreeSaveInput();
+                            break;
 
-                    case 4:
-                        InstructionFourPublishOutput();
-                        // Step forward
-                        _instructionPointer += 2;
-                        break;
+                        case 4:
+                            InstructionFourPublishOutput();
+                            break;
 
-                    case 99:
-                        finished = true;
-                        break;
+                        case 5:
+                            InstructionFiveStepIfNonZero(_memory[_instructionPointer]);
+                            break;
 
-                    default:
-                        _output.Add(_memory[_instructionPointer].GetRawValue());
-                        _instructionPointer++;
-                        break;
-                        //throw new ArgumentException($"Instruction dictionary in bad state at ${_instructionPointer}");
+                        case 6:
+                            InstructionSixStepIfZero(_memory[_instructionPointer]);
+                            break;
+
+                        case 7:
+                            InstructionSevenStoreIfLessThan(_memory[_instructionPointer]);
+                            break;
+
+                        case 8:
+                            InstructionEightStoreIfEqual(_memory[_instructionPointer]);
+                            break;
+
+                        default:
+                            throw new ArgumentException(
+                                $"Instruction dictionary in bad state at {_instructionPointer}");
+                    }
                 }
             } while (!finished);
         }
 
         public int Result()
         {
-            return _memory[0].GetRawValue();
+            return _memory[0];
         }
 
         // TODO: Determine Instruction class and Interface, including how to process inputs/outputs and having variable parameters
-        private void InstructionTwoMultiplication()
+        private void InstructionTwoMultiplication(int operationValue)
         {
-            Instruction parameterOne = _memory[_instructionPointer + 1];
-            Instruction parameterTwo = _memory[_instructionPointer + 2];
-            int valueOne = parameterOne.GetValue(_memory[parameterOne.GetRawValue()]);
-            int valueTwo = parameterTwo.GetValue(_memory[parameterTwo.GetRawValue()]);
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
 
             int updatedValue = valueOne * valueTwo;
 
-            _memory[_memory[_instructionPointer + 3].GetRawValue()].SetValue(updatedValue);
+            _memory[_memory[_instructionPointer + 3]] = updatedValue;
+
+            // Step forward
+            _instructionPointer += 4;
         }
 
-        private void InstructionOneAddition()
+        private void InstructionOneAddition(int operationValue)
         {
-            Instruction parameterOne = _memory[_instructionPointer + 1];
-            Instruction parameterTwo = _memory[_instructionPointer + 2];
-            int valueOne = parameterOne.GetValue(_memory[parameterOne.GetRawValue()]);
-            int valueTwo = parameterTwo.GetValue(_memory[parameterTwo.GetRawValue()]);
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
 
             int updatedValue = valueOne + valueTwo;
 
-            _memory[_memory[_instructionPointer + 3].GetRawValue()].SetValue(updatedValue);
+            _memory[_memory[_instructionPointer + 3]] = updatedValue;
+
+            // Step forward
+            _instructionPointer += 4;
         }
 
         private void InstructionThreeSaveInput()
         {
             if (_input != null)
             {
-                Instruction parameterOne = _memory[_instructionPointer + 1];
-                int valueOne = parameterOne.GetValue(_memory[parameterOne.GetRawValue()]);
-                _memory[valueOne].SetValue(_input.Value);
+                _memory[_memory[_instructionPointer + 1]] = _input.Value;
             }
+
+            // Step forward
+            _instructionPointer += 2;
         }
 
         private void InstructionFourPublishOutput()
         {
-            Instruction parameterOne = _memory[_instructionPointer + 1];
-            int valueOne = parameterOne.GetValue(_memory[parameterOne.GetRawValue()]);
-            _output.Add(valueOne);
+            _output = _memory[_memory[_instructionPointer + 1]];
+
+            // Step forward
+            _instructionPointer += 2;
+        }
+
+        private void InstructionFiveStepIfNonZero(int operationValue)
+        {
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
+
+            bool shouldStep = valueOne != 0;
+
+            // Step forward
+            _instructionPointer = shouldStep ? valueTwo : _instructionPointer += 3;
+        }
+
+        private void InstructionSixStepIfZero(int operationValue)
+        {
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
+
+            bool shouldStep = valueOne == 0;
+
+            // Step forward
+            _instructionPointer = shouldStep ? valueTwo : _instructionPointer += 3;
+        }
+
+        private void InstructionSevenStoreIfLessThan(int operationValue)
+        {
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
+
+            _memory[_memory[_instructionPointer + 3]] = valueOne < valueTwo ? 1 : 0;
+
+            // Step forward
+            _instructionPointer += 4;
+        }
+
+        private void InstructionEightStoreIfEqual(int operationValue)
+        {
+            int parameterOneMode = (operationValue / 100) % 10;
+            int parameterTwoMode = (operationValue / 1000) % 10;
+
+            int valueOne = parameterOneMode == 1
+                ? _memory[_instructionPointer + 1]
+                : _memory[_memory[_instructionPointer + 1]];
+            int valueTwo = parameterTwoMode == 1
+                ? _memory[_instructionPointer + 2]
+                : _memory[_memory[_instructionPointer + 2]];
+
+            _memory[_memory[_instructionPointer + 3]] = valueOne == valueTwo ? 1 : 0;
+
+            // Step forward
+            _instructionPointer += 4;
         }
 
         private void SplitInputIntoMemory(string memoryInput, int? noun, int? verb)
@@ -163,81 +262,15 @@ namespace AdventOfCode2019.IntCodeComputer
             // Set up the memory
             foreach (string instruction in instructions)
             {
-                if (address == 0)
-                    parameterModes = ProcessParameterModes(instruction);
-                else if (noun != null && address == 1)
-                    _memory.Add(address, new Instruction(noun.Value));
+                if (noun != null && address == 1)
+                    _memory.Add(address, noun.Value);
                 else if (verb != null && address == 2)
-                    _memory.Add(address, new Instruction(verb.Value));
+                    _memory.Add(address, verb.Value);
                 else
-                    _memory.Add(address, new Instruction(int.Parse(instruction)));
+                    _memory.Add(address, int.Parse(instruction));
 
                 address++;
             }
-
-            // Add parameter modes to memory instructions
-            for (int p = 1; p <= parameterModes.Count; p++)
-            {
-                _memory[p].ParameterMode = parameterModes[p - 1];
-            }
-        }
-
-        private List<int> ProcessParameterModes(string instruction)
-        {
-            List<int> parameterModes = new List<int>();
-            
-            // It does not have Parameter Modes
-            if (instruction.Length <= 2)
-            {
-                // Memory processes as normal
-                _memory.Add(0, new Instruction(int.Parse(instruction)));
-                return parameterModes;
-            }
-                
-            // Otherwise, we need to handle parameter modes
-            char[] digits = instruction.ToCharArray();
-            int digitLength = digits.Length;
-
-            int firstInstruction = int.Parse($"{digits[digitLength - 2]}{digits[digitLength - 1]}");
-            _memory.Add(0, new Instruction(firstInstruction));
-
-            // Handle parameter modes
-            for (int i = digitLength - 3; i <= 0; i--)
-            {
-                parameterModes.Add(int.Parse($"{digits[i]}"));
-            }
-
-            return parameterModes;
-        }
-    }
-
-    public class Instruction
-    {
-        public int ParameterMode { get; set; }
-        private int _value;
-
-        public Instruction(int value)
-        {
-            _value = value;
-            ParameterMode = 0;
-        }
-
-        public int GetValue(Instruction pointedTo)
-        {
-            if (ParameterMode == 1)
-                return GetRawValue();
-
-            return pointedTo.GetRawValue();
-        }
-
-        public int GetRawValue()
-        {
-            return _value;
-        }
-
-        public void SetValue(int value)
-        {
-            _value = value;
         }
     }
 }
