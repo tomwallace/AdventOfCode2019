@@ -1,4 +1,5 @@
-﻿using AdventOfCode2019.Two;
+﻿using AdventOfCode2019.IntCodeComputer;
+using AdventOfCode2019.Two;
 using Xunit;
 
 namespace AdventOfCode2019.Tests
@@ -12,10 +13,10 @@ namespace AdventOfCode2019.Tests
         [InlineData("1,1,1,4,99,5,6,0,99", 1, 1, 30)]
         public void ProcessIntcodeProgram(string input, int noun, int verb, int expected)
         {
-            IntCodeProgram program = new IntCodeProgram(input, noun, verb);
-            program.ProcessInstructions();
+            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(input, noun, verb);
+            computer.ProcessInstructions();
 
-            Assert.Equal(expected, program.Result());
+            Assert.Equal(expected, computer.Result());
         }
 
         [Fact]

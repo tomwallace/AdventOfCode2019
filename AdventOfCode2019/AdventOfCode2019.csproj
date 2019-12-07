@@ -53,6 +53,7 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
+    <Compile Include="Five\DayFive.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
     <Compile Include="Four\CorrectDigits.cs" />
     <Compile Include="Four\DayFour.cs" />
@@ -64,12 +65,15 @@
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Six\AstralBody.cs" />
+    <Compile Include="Six\AstralBodyComparer.cs" />
+    <Compile Include="Six\DaySix.cs" />
     <Compile Include="Three\Coordinate.cs" />
     <Compile Include="Three\CoordinateComparer.cs" />
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Two\DayTwo.cs" />
-    <Compile Include="Two\IntCodeProgram.cs" />
+    <Compile Include="IntCodeComputer\IntCodeComputer.cs" />
     <Compile Include="Utility\FileUtility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +105,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="One\DayOneInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Six\DaySixInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Six\DaySixTestInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Six\DaySixTestInput2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

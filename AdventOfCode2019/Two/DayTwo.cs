@@ -1,4 +1,5 @@
 ﻿using System;
+using AdventOfCode2019.IntCodeComputer;
 
 namespace AdventOfCode2019.Two
 {
@@ -18,30 +19,30 @@ namespace AdventOfCode2019.Two
 
         public string PartA()
         {
-            IntCodeProgram program = new IntCodeProgram(INPUT, 12, 2);
-            program.ProcessInstructions();
-            return program.Result().ToString();
+            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, 12, 2);
+            computer.ProcessInstructions();
+            return computer.Result().ToString();
         }
 
         public string PartB()
         {
-            IntCodeProgram correctProgram = FindIntCodeProgramThatMatches(19690720);
-            int result = (100 * correctProgram.GetNoun()) + correctProgram.GetVerb();
+            IntCodeComputer.IntCodeComputer correctComputer = FindIntCodeProgramThatMatches(19690720);
+            int result = (100 * correctComputer.GetNoun().Value) + correctComputer.GetVerb().Value;
 
             return result.ToString();
         }
 
-        public IntCodeProgram FindIntCodeProgramThatMatches(int resultToMatch)
+        public IntCodeComputer.IntCodeComputer FindIntCodeProgramThatMatches(int resultToMatch)
         {
             for (int noun = 0; noun < 100; noun++)
             {
                 for (int verb = 0; verb < 100; verb++)
                 {
-                    IntCodeProgram program = new IntCodeProgram(INPUT, noun, verb);
-                    program.ProcessInstructions();
+                    IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, noun, verb);
+                    computer.ProcessInstructions();
 
-                    if (program.Result() == resultToMatch)
-                        return program;
+                    if (computer.Result() == resultToMatch)
+                        return computer;
                 }
             }
 
