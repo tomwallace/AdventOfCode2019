@@ -53,6 +53,10 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
+    <Compile Include="Eight\DayEight.cs" />
+    <Compile Include="Eight\Image.cs" />
+    <Compile Include="Eight\ImageLayer.cs" />
+    <Compile Include="Eight\Pixel.cs" />
     <Compile Include="Five\DayFive.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
     <Compile Include="Four\CorrectDigits.cs" />
@@ -80,6 +84,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Eight\DayEightInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LastYearOne\DayOneInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
