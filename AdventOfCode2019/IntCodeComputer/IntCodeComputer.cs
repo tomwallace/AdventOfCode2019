@@ -14,10 +14,13 @@ namespace AdventOfCode2019.IntCodeComputer
         private int? _noun;
         private int? _verb;
 
-        private int? _input;
-        private int _output;
+        private int[] _input;
+        private int _inputPointer;
 
-        // Construct an IntCodeProgram from a memoryInput string and noun and verb modifiers
+        private int _output;
+        private bool _pauseOnOutput;
+
+        // Construct an IntCodeProgram from a memoryInput string and noun and verb modifiers (needed in Day 2)
         public IntCodeComputer(string memoryInput, int? noun, int? verb)
         {
             _memory = new Dictionary<int, int>();
@@ -25,22 +28,43 @@ namespace AdventOfCode2019.IntCodeComputer
             _noun = noun;
             _verb = verb;
             _input = null;
+            _instructionPointer = 0;
 
             _output = 0;
+            _pauseOnOutput = false;
 
             _instructionPointer = 0;
         }
 
-        // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb
-        public IntCodeComputer(string memoryInput, int? input)
+        // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb (needed in Day 5)
+        // Takes a single input, but puts it in an array
+        public IntCodeComputer(string memoryInput, int input)
+        {
+            _memory = new Dictionary<int, int>();
+            SplitInputIntoMemory(memoryInput, null, null);
+            _noun = null;
+            _verb = null;
+            _input = new int[] { input };
+            _instructionPointer = 0;
+
+            _output = 0;
+            _pauseOnOutput = false;
+
+            _instructionPointer = 0;
+        }
+
+        // Construct an IntCodeProgram from a memoryInput with an array of input - but no noun or verb
+        public IntCodeComputer(string memoryInput, int[] input, bool pauseOnOutput = false)
         {
             _memory = new Dictionary<int, int>();
             SplitInputIntoMemory(memoryInput, null, null);
             _noun = null;
             _verb = null;
             _input = input;
+            _instructionPointer = 0;
 
             _output = 0;
+            _pauseOnOutput = pauseOnOutput;
 
             _instructionPointer = 0;
         }
@@ -60,8 +84,14 @@ namespace AdventOfCode2019.IntCodeComputer
             return _output;
         }
 
+        public void SetInput(int[] inputs)
+        {
+            _input = inputs;
+            _inputPointer = 0;
+        }
+
         // Processes the instructions in memory by moving through each instruction and its parameters
-        public void ProcessInstructions()
+        public int ProcessInstructions()
         {
             bool finished = false;
             do
@@ -90,6 +120,11 @@ namespace AdventOfCode2019.IntCodeComputer
 
                         case 4:
                             InstructionFourPublishOutput();
+                            if (_pauseOnOutput)
+                            {
+                                finished = true;
+                                return 0;
+                            }
                             break;
 
                         case 5:
@@ -114,6 +149,8 @@ namespace AdventOfCode2019.IntCodeComputer
                     }
                 }
             } while (!finished);
+
+            return 1;
         }
 
         public int Result()
@@ -166,7 +203,9 @@ namespace AdventOfCode2019.IntCodeComputer
         {
             if (_input != null)
             {
-                _memory[_memory[_instructionPointer + 1]] = _input.Value;
+                _memory[_memory[_instructionPointer + 1]] = _input[_inputPointer];
+                if (_inputPointer < (_input.Length - 1))
+                    _inputPointer++;
             }
 
             // Step forward
