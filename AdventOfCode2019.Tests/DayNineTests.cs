@@ -17,8 +17,6 @@ namespace AdventOfCode2019.Tests
             Assert.Equal(expected, result);
         }
 
-        // 0 is incorrect
-        // 203 is incorrect too
         [Fact]
         public void PartA_Actual()
         {

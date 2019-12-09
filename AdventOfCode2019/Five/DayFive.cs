@@ -6,7 +6,7 @@
 
         public string Description()
         {
-            return "Sunny with a Chance of Asteroids [HARD] [REFACTOR]";
+            return "Sunny with a Chance of Asteroids [IntCodeComputer]";
         }
 
         public int SortOrder()

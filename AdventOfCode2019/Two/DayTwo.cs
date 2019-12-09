@@ -1,5 +1,4 @@
 ﻿using System;
-using AdventOfCode2019.IntCodeComputer;
 
 namespace AdventOfCode2019.Two
 {
@@ -9,7 +8,7 @@ namespace AdventOfCode2019.Two
 
         public string Description()
         {
-            return "1202 Program Alarm";
+            return "1202 Program Alarm [IntCodeComputer]";
         }
 
         public int SortOrder()
@@ -21,7 +20,7 @@ namespace AdventOfCode2019.Two
         {
             IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, 12, 2);
             computer.ProcessInstructions();
-            return computer.Result().ToString();
+            return computer.GetMemorySlotOne().ToString();
         }
 
         public string PartB()
@@ -41,7 +40,7 @@ namespace AdventOfCode2019.Two
                     IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, noun, verb);
                     computer.ProcessInstructions();
 
-                    if (computer.Result() == resultToMatch)
+                    if (computer.GetMemorySlotOne() == resultToMatch)
                         return computer;
                 }
             }

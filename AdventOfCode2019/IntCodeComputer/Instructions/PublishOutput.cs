@@ -1,0 +1,28 @@
+﻿namespace AdventOfCode2019.IntCodeComputer.Instructions
+{
+    public class PublishOutput : InstructionBase, IInstruction
+    {
+        private const int IntCode = 4;
+
+        public int GetIntCode()
+        {
+            return IntCode;
+        }
+
+        public bool IsApplicable(long operationValue)
+        {
+            return operationValue % 10 == IntCode;
+        }
+
+        public InstructionDto Run(InstructionDto dto)
+        {
+            long valueOne = GetParameterValue(1, dto);
+            dto.Output.Add(valueOne);
+
+            // Step forward
+            dto.InstructionPointer += 2;
+
+            return dto;
+        }
+    }
+}

@@ -8,7 +8,7 @@ namespace AdventOfCode2019.Seven
     {
         public string Description()
         {
-            return "Amplification Circuit [HARD]";
+            return "Amplification Circuit [IntCodeComputer]";
         }
 
         public int SortOrder()

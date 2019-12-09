@@ -8,7 +8,7 @@ namespace AdventOfCode2019.Nine
     {
         public string Description()
         {
-            return "Sensor Boost [HARD}";
+            return "Sensor Boost [IntCodeComputer]";
         }
 
         public int SortOrder()

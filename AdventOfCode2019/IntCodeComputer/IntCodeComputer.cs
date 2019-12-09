@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AdventOfCode2019.IntCodeComputer.Instructions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode2019.IntCodeComputer
 {
-    // TODO: Pull instructions out into their own classes
     // An Intcode program is a list of integers separated by commas (like 1,0,0,3,99).
     public class IntCodeComputer
     {
@@ -22,6 +22,8 @@ namespace AdventOfCode2019.IntCodeComputer
 
         private long _relativeBase;
 
+        private readonly List<IInstruction> _instructions;
+
         // Construct an IntCodeProgram from a memoryInput string and noun and verb modifiers (needed in Day 2)
         public IntCodeComputer(string memoryInput, long? noun, long? verb)
         {
@@ -37,6 +39,8 @@ namespace AdventOfCode2019.IntCodeComputer
 
             _inputPointer = 0;
             _relativeBase = 0;
+
+            _instructions = GetInstructions();
         }
 
         // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb (needed in Days 5 and 9)
@@ -55,6 +59,8 @@ namespace AdventOfCode2019.IntCodeComputer
 
             _inputPointer = 0;
             _relativeBase = 0;
+
+            _instructions = GetInstructions();
         }
 
         // Construct an IntCodeProgram from a memoryInput with an array of input - but no noun or verb (needed in Day 7)
@@ -72,6 +78,8 @@ namespace AdventOfCode2019.IntCodeComputer
 
             _inputPointer = 0;
             _relativeBase = 0;
+
+            _instructions = GetInstructions();
         }
 
         public long? GetNoun()
@@ -95,6 +103,11 @@ namespace AdventOfCode2019.IntCodeComputer
             _inputPointer = 0;
         }
 
+        public long GetMemorySlotOne()
+        {
+            return _memory[0];
+        }
+
         // Processes the instructions in memory by moving through each instruction and its parameters
         public int ProcessInstructions()
         {
@@ -108,53 +121,23 @@ namespace AdventOfCode2019.IntCodeComputer
                 }
                 else
                 {
-                    // Work with just the first two digits of the current value
-                    switch (_memory[_instructionPointer] % 10)
+                    foreach (IInstruction instruction in _instructions)
                     {
-                        case 1:
-                            InstructionOneAddition(_memory[_instructionPointer]);
-                            break;
+                        long operationValue = _memory[_instructionPointer];
+                        if (instruction.IsApplicable(operationValue))
+                        {
+                            InstructionDto dto = MapInstructionDto(operationValue);
+                            InstructionDto updatedDto = instruction.Run(dto);
+                            SetValuesFromDto(updatedDto);
 
-                        case 2:
-                            InstructionTwoMultiplication(_memory[_instructionPointer]);
-                            break;
-
-                        case 3:
-                            InstructionThreeSaveInput(_memory[_instructionPointer]);
-                            break;
-
-                        case 4:
-                            InstructionFourPublishOutput(_memory[_instructionPointer]);
-                            if (_pauseOnOutput)
+                            // Handle output "pause"
+                            if (_pauseOnOutput && instruction.GetType() == typeof(PublishOutput))
                             {
-                                finished = true;
                                 return 0;
                             }
-                            break;
 
-                        case 5:
-                            InstructionFiveStepIfNonZero(_memory[_instructionPointer]);
                             break;
-
-                        case 6:
-                            InstructionSixStepIfZero(_memory[_instructionPointer]);
-                            break;
-
-                        case 7:
-                            InstructionSevenStoreIfLessThan(_memory[_instructionPointer]);
-                            break;
-
-                        case 8:
-                            InstructionEightStoreIfEqual(_memory[_instructionPointer]);
-                            break;
-
-                        case 9:
-                            InstructionNineAdjustRelativeBase(_memory[_instructionPointer]);
-                            break;
-
-                        default:
-                            throw new ArgumentException(
-                                $"Instruction dictionary in bad state at {_instructionPointer}");
+                        }
                     }
                 }
             } while (!finished);
@@ -162,108 +145,69 @@ namespace AdventOfCode2019.IntCodeComputer
             return 1;
         }
 
-        public long Result()
+        private InstructionDto MapInstructionDto(long operationValue)
         {
-            return _memory[0];
-        }
-
-        // TODO: Determine Instruction class and Interface, including how to process inputs/outputs and having variable parameters
-        private void InstructionTwoMultiplication(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            long updatedValue = valueOne * valueTwo;
-
-            SetParameterValue(operationValue, 3, updatedValue);
-
-            // Step forward
-            _instructionPointer += 4;
-        }
-
-        private void InstructionOneAddition(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            long updatedValue = valueOne + valueTwo;
-
-            SetParameterValue(operationValue, 3, updatedValue);
-
-            // Step forward
-            _instructionPointer += 4;
-        }
-
-        private void InstructionThreeSaveInput(long operationValue)
-        {
-            if (_input != null)
+            return new InstructionDto()
             {
-                SetParameterValue(operationValue, 1, _input[_inputPointer]);
+                Memory = _memory,
+                InstructionPointer = _instructionPointer,
+                InputPointer = _inputPointer,
+                Input = _input,
+                OperationValue = operationValue,
+                Output = _output,
+                RelativeBase = _relativeBase
+            };
+        }
 
-                if (_inputPointer < (_input.Length - 1))
-                    _inputPointer++;
+        private void SetValuesFromDto(InstructionDto dto)
+        {
+            _memory = dto.Memory;
+            _instructionPointer = dto.InstructionPointer;
+            _inputPointer = dto.InputPointer;
+            _input = dto.Input;
+            _output = dto.Output;
+            _relativeBase = dto.RelativeBase;
+        }
+
+        private List<IInstruction> GetInstructions()
+        {
+            return new List<IInstruction>()
+            {
+                new Addition(),
+                new Multiplication(),
+                new SaveInput(),
+                new PublishOutput(),
+                new StepIfNonZero(),
+                new StepIfZero(),
+                new StoreIfLessThan(),
+                new StoreIfEqualTo(),
+                new AdjustRelativeBase()
+            };
+        }
+
+        // TODO: come back and try reflection once otherwise working
+        // Collect list of instructions using reflection
+        private List<IInstruction> GetInstructionsReflection()
+        {
+            List<IInstruction> instructions = new List<IInstruction>();
+
+            var interfaceType = typeof(IInstruction);
+            var instructionTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => interfaceType.IsAssignableFrom(p) && p.IsInterface == false)
+                .OrderBy(instructionType =>
+                {
+                    IInstruction instance = (IInstruction)Activator.CreateInstance(instructionType, null);
+                    return instance.GetIntCode();
+                });
+
+            foreach (var instructionType in instructionTypes)
+            {
+                IInstruction instance = (IInstruction)Activator.CreateInstance(instructionType, null);
+                instructions.Add(instance);
             }
 
-            // Step forward
-            _instructionPointer += 2;
-        }
-
-        private void InstructionFourPublishOutput(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            _output.Add(valueOne);
-
-            // Step forward
-            _instructionPointer += 2;
-        }
-
-        private void InstructionFiveStepIfNonZero(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            bool shouldStep = valueOne != 0;
-
-            // Step forward
-            _instructionPointer = shouldStep ? valueTwo : _instructionPointer += 3;
-        }
-
-        private void InstructionSixStepIfZero(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            bool shouldStep = valueOne == 0;
-
-            // Step forward
-            _instructionPointer = shouldStep ? valueTwo : _instructionPointer += 3;
-        }
-
-        private void InstructionSevenStoreIfLessThan(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            //_memory[_memory[_instructionPointer + 3]] = valueOne < valueTwo ? 1 : 0;
-            SetParameterValue(operationValue, 3, valueOne < valueTwo ? 1 : 0);
-
-            // Step forward
-            _instructionPointer += 4;
-        }
-
-        private void InstructionEightStoreIfEqual(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            long valueTwo = GetParameterValue(operationValue, 2);
-            //_memory[_memory[_instructionPointer + 3]] = valueOne == valueTwo ? 1 : 0;
-            SetParameterValue(operationValue, 3, valueOne == valueTwo ? 1 : 0);
-
-            // Step forward
-            _instructionPointer += 4;
-        }
-
-        private void InstructionNineAdjustRelativeBase(long operationValue)
-        {
-            long valueOne = GetParameterValue(operationValue, 1);
-            _relativeBase += valueOne;
-
-            // Step forward
-            _instructionPointer += 2;
+            return instructions;
         }
 
         private void SplitInputIntoMemory(string memoryInput, long? noun, long? verb)
@@ -284,55 +228,6 @@ namespace AdventOfCode2019.IntCodeComputer
 
                 address++;
             }
-        }
-
-        private long GetParameterValue(long operationValue, int parameterNumber)
-        {
-            long parameterMode = parameterNumber == 1 ? (operationValue / 100) % 10 : (operationValue / 1000) % 10;
-
-            if (parameterMode == 1)
-                return GetMemoryValue(_instructionPointer + parameterNumber);
-
-            if (parameterMode == 2)
-                return GetMemoryValue(GetMemoryValue(_instructionPointer + parameterNumber) + _relativeBase);
-
-            return GetMemoryValue(GetMemoryValue(_instructionPointer + parameterNumber));
-        }
-
-        private long GetMemoryValue(long pointer)
-        {
-            if (_memory.ContainsKey(pointer))
-                return _memory[pointer];
-
-            _memory.Add(pointer, 0);
-            return 0;
-        }
-
-        private void SetParameterValue(long operationValue, int parameterNumber, long valueToSet)
-        {
-            long parameterMode = 0;
-            if (parameterNumber == 1)
-                parameterMode = (operationValue / 100) % 10;
-            if (parameterNumber == 2)
-                parameterMode = (operationValue / 1000) % 10;
-            if (parameterNumber == 3)
-                parameterMode = (operationValue / 10000) % 10;
-
-            if (parameterMode == 1)
-                throw new ArgumentException("Cannot use immediate mode while setting memory location value");
-
-            if (parameterMode == 2)
-                SetMemoryValue(GetMemoryValue(_instructionPointer + parameterNumber) + _relativeBase, valueToSet);
-
-            SetMemoryValue(GetMemoryValue(_instructionPointer + parameterNumber), valueToSet);
-        }
-
-        private void SetMemoryValue(long pointer, long valueToSet)
-        {
-            if (!_memory.ContainsKey(pointer))
-                _memory.Add(pointer, 0);
-
-            _memory[pointer] = valueToSet;
         }
     }
 }

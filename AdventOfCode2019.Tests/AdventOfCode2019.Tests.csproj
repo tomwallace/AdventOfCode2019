@@ -72,6 +72,7 @@
     <Compile Include="DaySixTests.cs" />
     <Compile Include="DayThreeTests.cs" />
     <Compile Include="DayTwoTests.cs" />
+    <Compile Include="IntCodeComputerTests.cs" />
     <Compile Include="LastYearDayOneTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
