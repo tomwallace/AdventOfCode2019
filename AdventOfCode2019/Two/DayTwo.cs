@@ -27,7 +27,7 @@ namespace AdventOfCode2019.Two
         public string PartB()
         {
             IntCodeComputer.IntCodeComputer correctComputer = FindIntCodeProgramThatMatches(19690720);
-            int result = (100 * correctComputer.GetNoun().Value) + correctComputer.GetVerb().Value;
+            long result = (100 * correctComputer.GetNoun().Value) + correctComputer.GetVerb().Value;
 
             return result.ToString();
         }

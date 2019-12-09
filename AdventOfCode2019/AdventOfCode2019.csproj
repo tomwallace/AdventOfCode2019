@@ -66,6 +66,7 @@
     <Compile Include="Four\IPassportRule.cs" />
     <Compile Include="IAdventProblemSet.cs" />
     <Compile Include="LastYearOne\LastYearDayOne.cs" />
+    <Compile Include="Nine\DayNine.cs" />
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +111,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LastYearOne\DayOneTestInputG.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Nine\DayNineInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="One\DayOneInput.txt">

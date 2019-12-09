@@ -23,7 +23,7 @@ namespace AdventOfCode2019.Seven
             List<string> fileLines = FileUtility.ParseFileToList(filePath, line => line);
             string memoryInput = fileLines.First();
 
-            int result = CalculateMaxSignalToThrusters(memoryInput);
+            long result = CalculateMaxSignalToThrusters(memoryInput);
             return result.ToString();
         }
 
@@ -34,22 +34,22 @@ namespace AdventOfCode2019.Seven
             List<string> fileLines = FileUtility.ParseFileToList(filePath, line => line);
             string memoryInput = fileLines.First();
 
-            int result = FeedbackLoopCalculateMaxSignal(memoryInput);
+            long result = FeedbackLoopCalculateMaxSignal(memoryInput);
             return result.ToString();
         }
 
-        public int CalculateMaxSignalToThrusters(string memoryInput)
+        public long CalculateMaxSignalToThrusters(string memoryInput)
         {
-            HashSet<int> thrusterSignals = new HashSet<int>();
+            HashSet<long> thrusterSignals = new HashSet<long>();
             var possibleSettings = GetPermutations(Enumerable.Range(0, 5), 5);
 
             foreach (var settings in possibleSettings)
             {
-                int amplifierSignal = 0;
+                long amplifierSignal = 0;
 
                 foreach (int phaseSetting in settings)
                 {
-                    int[] inputs = new[] { phaseSetting, amplifierSignal };
+                    long[] inputs = new[] { phaseSetting, amplifierSignal };
                     IntCodeComputer.IntCodeComputer amplifier = new IntCodeComputer.IntCodeComputer(memoryInput, inputs);
                     amplifier.ProcessInstructions();
                     amplifierSignal = amplifier.GetDiagnosticCode();
@@ -58,51 +58,51 @@ namespace AdventOfCode2019.Seven
                 thrusterSignals.Add(amplifierSignal);
             }
 
-            List<int> sortedSignals = thrusterSignals.ToList().OrderByDescending(s => s).ToList();
+            List<long> sortedSignals = thrusterSignals.ToList().OrderByDescending(s => s).ToList();
             return sortedSignals.FirstOrDefault();
         }
 
-        public int FeedbackLoopCalculateMaxSignal(string memoryInput)
+        public long FeedbackLoopCalculateMaxSignal(string memoryInput)
         {
-            HashSet<int> thrusterSignals = new HashSet<int>();
+            HashSet<long> thrusterSignals = new HashSet<long>();
             var possibleSettings = GetPermutations(Enumerable.Range(5, 5), 5);
 
             foreach (var settings in possibleSettings)
             {
                 // Cannot loop over collection of IntCodeComputers, as for this part, they need to remain as they were in previous run
-                IntCodeComputer.IntCodeComputer amplifierA = new IntCodeComputer.IntCodeComputer(memoryInput, new int[] { 0 }, true);
-                IntCodeComputer.IntCodeComputer amplifierB = new IntCodeComputer.IntCodeComputer(memoryInput, new int[] { 0 }, true);
-                IntCodeComputer.IntCodeComputer amplifierC = new IntCodeComputer.IntCodeComputer(memoryInput, new int[] { 0 }, true);
-                IntCodeComputer.IntCodeComputer amplifierD = new IntCodeComputer.IntCodeComputer(memoryInput, new int[] { 0 }, true);
-                IntCodeComputer.IntCodeComputer amplifierE = new IntCodeComputer.IntCodeComputer(memoryInput, new int[] { 0 }, true);
+                IntCodeComputer.IntCodeComputer amplifierA = new IntCodeComputer.IntCodeComputer(memoryInput, new long[] { 0 }, true);
+                IntCodeComputer.IntCodeComputer amplifierB = new IntCodeComputer.IntCodeComputer(memoryInput, new long[] { 0 }, true);
+                IntCodeComputer.IntCodeComputer amplifierC = new IntCodeComputer.IntCodeComputer(memoryInput, new long[] { 0 }, true);
+                IntCodeComputer.IntCodeComputer amplifierD = new IntCodeComputer.IntCodeComputer(memoryInput, new long[] { 0 }, true);
+                IntCodeComputer.IntCodeComputer amplifierE = new IntCodeComputer.IntCodeComputer(memoryInput, new long[] { 0 }, true);
 
                 bool initSetup = true;
                 int exitCode = 0;
-                int amplifierSignal = 0;
+                long amplifierSignal = 0;
                 int[] phaseSettings = settings.ToArray();
                 do
                 {
-                    int[] inputsA = initSetup ? new[] { phaseSettings[0], amplifierSignal } : new[] { amplifierSignal };
+                    long[] inputsA = initSetup ? new[] { phaseSettings[0], amplifierSignal } : new[] { amplifierSignal };
                     amplifierA.SetInput(inputsA);
                     exitCode += amplifierA.ProcessInstructions();
                     amplifierSignal = amplifierA.GetDiagnosticCode();
 
-                    int[] inputsB = initSetup ? new[] { phaseSettings[1], amplifierSignal } : new[] { amplifierSignal };
+                    long[] inputsB = initSetup ? new[] { phaseSettings[1], amplifierSignal } : new[] { amplifierSignal };
                     amplifierB.SetInput(inputsB);
                     exitCode += amplifierB.ProcessInstructions();
                     amplifierSignal = amplifierB.GetDiagnosticCode();
 
-                    int[] inputsC = initSetup ? new[] { phaseSettings[2], amplifierSignal } : new[] { amplifierSignal };
+                    long[] inputsC = initSetup ? new[] { phaseSettings[2], amplifierSignal } : new[] { amplifierSignal };
                     amplifierC.SetInput(inputsC);
                     exitCode += amplifierC.ProcessInstructions();
                     amplifierSignal = amplifierC.GetDiagnosticCode();
 
-                    int[] inputsD = initSetup ? new[] { phaseSettings[3], amplifierSignal } : new[] { amplifierSignal };
+                    long[] inputsD = initSetup ? new[] { phaseSettings[3], amplifierSignal } : new[] { amplifierSignal };
                     amplifierD.SetInput(inputsD);
                     exitCode += amplifierD.ProcessInstructions();
                     amplifierSignal = amplifierD.GetDiagnosticCode();
 
-                    int[] inputsE = initSetup ? new[] { phaseSettings[4], amplifierSignal } : new[] { amplifierSignal };
+                    long[] inputsE = initSetup ? new[] { phaseSettings[4], amplifierSignal } : new[] { amplifierSignal };
                     amplifierE.SetInput(inputsE);
                     exitCode += amplifierE.ProcessInstructions();
                     amplifierSignal = amplifierE.GetDiagnosticCode();
@@ -114,7 +114,7 @@ namespace AdventOfCode2019.Seven
                 thrusterSignals.Add(amplifierSignal);
             }
 
-            List<int> sortedSignals = thrusterSignals.ToList().OrderByDescending(s => s).ToList();
+            List<long> sortedSignals = thrusterSignals.ToList().OrderByDescending(s => s).ToList();
             return sortedSignals.FirstOrDefault();
         }
 
