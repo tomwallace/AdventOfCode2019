@@ -40,7 +40,7 @@ namespace AdventOfCode2019.IntCodeComputer
             _inputPointer = 0;
             _relativeBase = 0;
 
-            _instructions = GetInstructions();
+            _instructions = GetInstructionsReflection();
         }
 
         // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb (needed in Days 5 and 9)
@@ -60,7 +60,7 @@ namespace AdventOfCode2019.IntCodeComputer
             _inputPointer = 0;
             _relativeBase = 0;
 
-            _instructions = GetInstructions();
+            _instructions = GetInstructionsReflection();
         }
 
         // Construct an IntCodeProgram from a memoryInput with an array of input - but no noun or verb (needed in Day 7)
@@ -79,7 +79,7 @@ namespace AdventOfCode2019.IntCodeComputer
             _inputPointer = 0;
             _relativeBase = 0;
 
-            _instructions = GetInstructions();
+            _instructions = GetInstructionsReflection();
         }
 
         public long? GetNoun()
@@ -169,43 +169,13 @@ namespace AdventOfCode2019.IntCodeComputer
             _relativeBase = dto.RelativeBase;
         }
 
-        private List<IInstruction> GetInstructions()
-        {
-            return new List<IInstruction>()
-            {
-                new Addition(),
-                new Multiplication(),
-                new SaveInput(),
-                new PublishOutput(),
-                new StepIfNonZero(),
-                new StepIfZero(),
-                new StoreIfLessThan(),
-                new StoreIfEqualTo(),
-                new AdjustRelativeBase()
-            };
-        }
-
-        // TODO: come back and try reflection once otherwise working
         // Collect list of instructions using reflection
         private List<IInstruction> GetInstructionsReflection()
         {
-            List<IInstruction> instructions = new List<IInstruction>();
-
             var interfaceType = typeof(IInstruction);
-            var instructionTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => interfaceType.IsAssignableFrom(p) && p.IsInterface == false)
-                .OrderBy(instructionType =>
-                {
-                    IInstruction instance = (IInstruction)Activator.CreateInstance(instructionType, null);
-                    return instance.GetIntCode();
-                });
-
-            foreach (var instructionType in instructionTypes)
-            {
-                IInstruction instance = (IInstruction)Activator.CreateInstance(instructionType, null);
-                instructions.Add(instance);
-            }
+            List<IInstruction> instructions = System.Reflection.Assembly.GetAssembly(interfaceType).GetTypes()
+                .Where(a => interfaceType.IsAssignableFrom(a) && a.IsInterface == false)
+                .Select(t => (IInstruction)Activator.CreateInstance(t, null)).ToList();
 
             return instructions;
         }

@@ -86,6 +86,7 @@
     <Compile Include="Six\AstralBody.cs" />
     <Compile Include="Six\AstralBodyComparer.cs" />
     <Compile Include="Six\DaySix.cs" />
+    <Compile Include="Ten\DayTen.cs" />
     <Compile Include="Three\Coordinate.cs" />
     <Compile Include="Three\CoordinateComparer.cs" />
     <Compile Include="Three\DayThree.cs" />
