@@ -11,9 +11,6 @@ namespace AdventOfCode2019.IntCodeComputer
         private Dictionary<long, long> _memory;
         private long _instructionPointer;
 
-        private long? _noun;
-        private long? _verb;
-
         private long[] _input;
         private long _inputPointer;
 
@@ -24,18 +21,17 @@ namespace AdventOfCode2019.IntCodeComputer
 
         private readonly List<IInstruction> _instructions;
 
-        // Construct an IntCodeProgram from a memoryInput string and noun and verb modifiers (needed in Day 2)
-        public IntCodeComputer(string memoryInput, long? noun, long? verb)
+        // Construct an IntCodeProgram from a memoryInput with an input
+        // Takes a single input, but puts it in an array
+        public IntCodeComputer(string memoryInput, long input, bool pauseOnOutput = false)
         {
             _memory = new Dictionary<long, long>();
-            SplitInputIntoMemory(memoryInput, noun, verb);
-            _noun = noun;
-            _verb = verb;
-            _input = null;
+            SplitInputIntoMemory(memoryInput, null, null);
+            _input = new long[] { input };
             _instructionPointer = 0;
 
             _output = new List<long>();
-            _pauseOnOutput = false;
+            _pauseOnOutput = pauseOnOutput;
 
             _inputPointer = 0;
             _relativeBase = 0;
@@ -43,19 +39,16 @@ namespace AdventOfCode2019.IntCodeComputer
             _instructions = GetInstructionsReflection();
         }
 
-        // Construct an IntCodeProgram from a memoryInput with an input - but no noun or verb (needed in Days 5 and 9)
+        // Construct an IntCodeProgram with an existing memorySet, which is useful for "cloning" a computer
         // Takes a single input, but puts it in an array
-        public IntCodeComputer(string memoryInput, long input)
+        public IntCodeComputer(Dictionary<long, long> memory, long input, bool pauseOnOutput = false)
         {
-            _memory = new Dictionary<long, long>();
-            SplitInputIntoMemory(memoryInput, null, null);
-            _noun = null;
-            _verb = null;
+            _memory = memory;
             _input = new long[] { input };
             _instructionPointer = 0;
 
             _output = new List<long>();
-            _pauseOnOutput = false;
+            _pauseOnOutput = pauseOnOutput;
 
             _inputPointer = 0;
             _relativeBase = 0;
@@ -68,8 +61,6 @@ namespace AdventOfCode2019.IntCodeComputer
         {
             _memory = new Dictionary<long, long>();
             SplitInputIntoMemory(memoryInput, null, null);
-            _noun = null;
-            _verb = null;
             _input = input;
             _instructionPointer = 0;
 
@@ -82,30 +73,43 @@ namespace AdventOfCode2019.IntCodeComputer
             _instructions = GetInstructionsReflection();
         }
 
-        public long? GetNoun()
+        // Working with Memory
+        public long GetMemoryLocation(long location)
         {
-            return _noun;
+            return _memory[location];
         }
 
-        public long? GetVerb()
+        public Dictionary<long, long> CloneMemory()
         {
-            return _verb;
+            return _memory.ToDictionary(m => m.Key, m => m.Value);
         }
 
-        public long GetDiagnosticCode()
+        public void SetMemoryLocation(long location, long value)
         {
-            return _output.LastOrDefault();
+            _memory[location] = value;
         }
 
+        // Working with Input
         public void SetInput(long[] inputs)
         {
             _input = inputs;
             _inputPointer = 0;
         }
 
-        public long GetMemorySlotOne()
+        // Working with Output
+        public long GetDiagnosticCode()
         {
-            return _memory[0];
+            return _output.LastOrDefault();
+        }
+
+        public List<long> GetOutput()
+        {
+            return _output;
+        }
+
+        public void ClearOutput()
+        {
+            _output = new List<long>();
         }
 
         // Processes the instructions in memory by moving through each instruction and its parameters

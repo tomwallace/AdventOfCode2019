@@ -11,10 +11,12 @@ namespace AdventOfCode2019.Tests
         [InlineData("1,1,1,4,99,5,6,0,99", 1, 1, 30)]
         public void DayTwo_ProcessIntCodeComputer(string input, int noun, int verb, int expected)
         {
-            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(input, noun, verb);
+            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(input, 0);
+            computer.SetMemoryLocation(1, noun);
+            computer.SetMemoryLocation(2, noun);
             computer.ProcessInstructions();
 
-            Assert.Equal(expected, computer.GetMemorySlotOne());
+            Assert.Equal(expected, computer.GetMemoryLocation(0));
         }
 
         [Fact]

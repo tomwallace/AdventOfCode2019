@@ -57,6 +57,8 @@
     <Compile Include="Eight\Image.cs" />
     <Compile Include="Eight\ImageLayer.cs" />
     <Compile Include="Eight\Pixel.cs" />
+    <Compile Include="Eleven\DayEleven.cs" />
+    <Compile Include="Eleven\PaintingRobot.cs" />
     <Compile Include="Five\DayFive.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
     <Compile Include="Four\CorrectDigits.cs" />
@@ -87,10 +89,12 @@
     <Compile Include="Six\AstralBodyComparer.cs" />
     <Compile Include="Six\DaySix.cs" />
     <Compile Include="Ten\DayTen.cs" />
+    <Compile Include="Thirteen\DayThirteen.cs" />
     <Compile Include="Three\Coordinate.cs" />
     <Compile Include="Three\CoordinateComparer.cs" />
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
+    <Compile Include="Twelve\DayTwelve.cs" />
     <Compile Include="Two\DayTwo.cs" />
     <Compile Include="IntCodeComputer\IntCodeComputer.cs" />
     <Compile Include="Utility\FileUtility.cs" />
@@ -100,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Eight\DayEightInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eleven\DayElevenInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LastYearOne\DayOneInput.txt">
@@ -163,6 +170,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Ten\DayTenTestInputE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thirteen\DayThirteenInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Twelve\DayTwelveInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Twelve\DayTwelveTestInputA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Twelve\DayTwelveTestInputB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

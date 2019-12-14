@@ -18,15 +18,17 @@ namespace AdventOfCode2019.Two
 
         public string PartA()
         {
-            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, 12, 2);
+            IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, new long[]{});
+            computer.SetMemoryLocation(1,12);
+            computer.SetMemoryLocation(2,2);
             computer.ProcessInstructions();
-            return computer.GetMemorySlotOne().ToString();
+            return computer.GetMemoryLocation(0).ToString();
         }
 
         public string PartB()
         {
             IntCodeComputer.IntCodeComputer correctComputer = FindIntCodeProgramThatMatches(19690720);
-            long result = (100 * correctComputer.GetNoun().Value) + correctComputer.GetVerb().Value;
+            long result = (100 * correctComputer.GetMemoryLocation(1)) + correctComputer.GetMemoryLocation(2);
 
             return result.ToString();
         }
@@ -37,10 +39,12 @@ namespace AdventOfCode2019.Two
             {
                 for (int verb = 0; verb < 100; verb++)
                 {
-                    IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, noun, verb);
+                    IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(INPUT, new long[]{});
+                    computer.SetMemoryLocation(1, noun);
+                    computer.SetMemoryLocation(2, verb);
                     computer.ProcessInstructions();
 
-                    if (computer.GetMemorySlotOne() == resultToMatch)
+                    if (computer.GetMemoryLocation(0) == resultToMatch)
                         return computer;
                 }
             }
