@@ -79,6 +79,7 @@ namespace AdventOfCode2019.IntCodeComputer
             return _memory[location];
         }
 
+        // TODO: Remove if not necessary
         public Dictionary<long, long> CloneMemory()
         {
             return _memory.ToDictionary(m => m.Key, m => m.Value);
@@ -130,6 +131,10 @@ namespace AdventOfCode2019.IntCodeComputer
                         long operationValue = _memory[_instructionPointer];
                         if (instruction.IsApplicable(operationValue))
                         {
+                            // Handle need input "pause"
+                            if (instruction.GetType() == typeof(SaveInput) && _inputPointer >= _input.Length)
+                                return 0;
+                            
                             InstructionDto dto = MapInstructionDto(operationValue);
                             InstructionDto updatedDto = instruction.Run(dto);
                             SetValuesFromDto(updatedDto);

@@ -20,7 +20,8 @@
             {
                 SetParameterValue(1, dto.Input[dto.InputPointer], dto);
 
-                if (dto.InputPointer < (dto.Input.Length - 1))
+                // TODO: Remove the uncommented out code if it works
+                //if (dto.InputPointer < (dto.Input.Length - 1))
                     dto.InputPointer++;
             }
 

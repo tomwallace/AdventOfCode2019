@@ -28,13 +28,16 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("372", result);
         }
 
+        // Takes 35 min to run, so only uncomment if need to test 
+        /*
         [Fact]
         public void PartB_Actual()
         {
             var sut = new DayThirteen();
             var result = sut.PartB();
 
-            Assert.Equal("1110", result);
+            Assert.Equal("19297", result);
         }
+        */
     }
 }

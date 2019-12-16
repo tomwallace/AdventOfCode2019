@@ -91,6 +91,8 @@
     <Compile Include="Six\DaySix.cs" />
     <Compile Include="Ten\DayTen.cs" />
     <Compile Include="Thirteen\DayThirteen.cs" />
+    <Compile Include="Thirteen\GameBoard.cs" />
+    <Compile Include="Thirteen\GamePixel.cs" />
     <Compile Include="Three\Coordinate.cs" />
     <Compile Include="Three\CoordinateComparer.cs" />
     <Compile Include="Three\DayThree.cs" />
