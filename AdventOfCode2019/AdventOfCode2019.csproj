@@ -60,6 +60,7 @@
     <Compile Include="Eleven\DayEleven.cs" />
     <Compile Include="Eleven\PaintingRobot.cs" />
     <Compile Include="Five\DayFive.cs" />
+    <Compile Include="Fourteen\DayFourteen.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
     <Compile Include="Four\CorrectDigits.cs" />
     <Compile Include="Four\DayFour.cs" />
@@ -107,6 +108,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Eleven\DayElevenInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fourteen\DayFourteenInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fourteen\DayFourteenTestInputA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fourteen\DayFourteenTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fourteen\DayFourteenTestInputC.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fourteen\DayFourteenTestInputD.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LastYearOne\DayOneInput.txt">

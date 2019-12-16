@@ -8,7 +8,7 @@ namespace AdventOfCode2019.Tests
         [Theory]
         [InlineData(@"Twelve\DayTwelveTestInputA.txt", 10, 179)]
         [InlineData(@"Twelve\DayTwelveTestInputB.txt", 100, 1940)]
-        public void HowManyAsteroidsSeenFromBestLocation(string filePath, int timeSteps, int expected)
+        public void CalculateTotalSystemEnergy(string filePath, int timeSteps, int expected)
         {
             var sut = new DayTwelve();
             var result = sut.CalculateTotalSystemEnergy(filePath, timeSteps);

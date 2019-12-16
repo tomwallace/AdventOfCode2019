@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2019.Utility;
 using System.Collections.Generic;
 using System.Linq;
+using AdventOfCode2019.Eight;
 
 namespace AdventOfCode2019.Thirteen
 {
@@ -97,30 +98,40 @@ namespace AdventOfCode2019.Thirteen
             IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(memoryInput, inputs);
             computer.SetMemoryLocation(0, 2);
 
-            Queue<Dictionary<long, long>> queue = new Queue<Dictionary<long, long>>();
-            queue.Enqueue(computer.CloneMemory());
+            //Queue<Dictionary<long, long>> queue = new Queue<Dictionary<long, long>>();
+            //queue.Enqueue(computer.CloneMemory());
 
-            long[] inputOptions = new long[] { -1, 0, 1 };
+            //long[] inputOptions = new long[] { -1, 0, 1 };
             do
             {
-                Dictionary<long, long> existingMemory = queue.Dequeue();
+                //Dictionary<long, long> existingMemory = queue.Dequeue();
 
-                foreach (long input in inputOptions)
+                //foreach (long input in inputOptions)
+                //{
+                //IntCodeComputer.IntCodeComputer optionComputer = new IntCodeComputer.IntCodeComputer(existingMemory, input);
+                computer.ProcessInstructions();
+                List<long> intComputerOutput = computer.GetOutput();
+
+                GameBoard gameBoard = new GameBoard(intComputerOutput);
+
+                if (gameBoard.CountBlockTiles() == 0)
                 {
-                    IntCodeComputer.IntCodeComputer optionComputer = new IntCodeComputer.IntCodeComputer(existingMemory, input);
-                    optionComputer.ProcessInstructions();
-                    List<long> intComputerOutput = optionComputer.GetOutput();
-
-                    GameBoard gameBoard = new GameBoard(intComputerOutput);
-
-                    if (gameBoard.CountBlockTiles() == 0)
-                    {
-                        finalScore = gameBoard.PlayerScore;
-                        break;
-                    }
-
-                    queue.Enqueue(optionComputer.CloneMemory());
+                    finalScore = gameBoard.PlayerScore;
+                    break;
                 }
+
+                long paddleX = gameBoard.FindFirstXValueOfType(GamePixel.Paddle);
+                long ballX = gameBoard.FindFirstXValueOfType(GamePixel.Ball);
+
+                // FindPaddle() > FindBall() ? -1 : FindPaddle() < FindBall() ? 1 : 0
+                long newInput = paddleX > ballX ? -1 : paddleX < ballX ? 1 : 0;
+                var newInputs = inputs.ToList();
+                newInputs.Add(newInput);
+
+
+                computer.SetInput(newInputs.ToArray());
+                //queue.Enqueue(optionComputer.CloneMemory());
+                //}
             } while (finalScore == 0);
 
             return finalScore;
@@ -189,6 +200,13 @@ namespace AdventOfCode2019.Thirteen
         {
             int count = Board.Count(g => g.Value == GamePixel.Block);
             return count;
+        }
+
+        public long FindFirstXValueOfType(GamePixel type)
+        {
+            string key = Board.FirstOrDefault(b => b.Value == type).Key;
+            string[] split = key.Split(',');
+            return long.Parse(split[0]);
         }
     }
 }

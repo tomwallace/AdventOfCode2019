@@ -28,8 +28,6 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("372", result);
         }
 
-        // TODO: Failing for now
-        /*
         [Fact]
         public void PartB_Actual()
         {
@@ -38,6 +36,5 @@ namespace AdventOfCode2019.Tests
 
             Assert.Equal("1110", result);
         }
-        */
     }
 }
