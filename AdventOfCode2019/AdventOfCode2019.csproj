@@ -59,6 +59,9 @@
     <Compile Include="Eight\Pixel.cs" />
     <Compile Include="Eleven\DayEleven.cs" />
     <Compile Include="Eleven\PaintingRobot.cs" />
+    <Compile Include="Fifteen\DayFifteen.cs" />
+    <Compile Include="Fifteen\Position.cs" />
+    <Compile Include="Fifteen\RepairBotNode.cs" />
     <Compile Include="Five\DayFive.cs" />
     <Compile Include="Fourteen\DayFourteen.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
@@ -110,6 +113,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Eleven\DayElevenInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fifteen\DayFifteenInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Fourteen\DayFourteenInput.txt">
