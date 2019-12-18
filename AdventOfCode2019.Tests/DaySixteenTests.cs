@@ -18,6 +18,8 @@ namespace AdventOfCode2019.Tests
             Assert.Equal(expected, result);
         }
 
+        // TODO: Figure out a way to short cut these tests and re-enable
+        /*
         [Theory]
         [InlineData("03036732577212944063491565474664", 100, "84462026")]
         //[InlineData("02935109699940807407585447034323", 100, "78725270")]
@@ -29,6 +31,7 @@ namespace AdventOfCode2019.Tests
 
             Assert.Equal(expected, result);
         }
+        */
 
         [Fact]
         public void PartA_Actual()

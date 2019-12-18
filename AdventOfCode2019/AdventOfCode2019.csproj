@@ -53,6 +53,7 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
+    <Compile Include="Eighteen\DayEighteen.cs" />
     <Compile Include="Eight\DayEight.cs" />
     <Compile Include="Eight\Image.cs" />
     <Compile Include="Eight\ImageLayer.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seventeen\DaySeventeen.cs" />
     <Compile Include="Seven\DaySeven.cs" />
     <Compile Include="Sixteen\DaySixteen.cs" />
     <Compile Include="Six\AstralBody.cs" />
@@ -110,6 +112,24 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Eighteen\DayEighteenInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputC.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputD.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Eight\DayEightInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

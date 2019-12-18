@@ -37,6 +37,12 @@ namespace AdventOfCode2019.Fourteen
         public int CalculateOreRequired(string filePath)
         {
             Dictionary<string, Reaction> reactionCatalog = GetReactions(filePath);
+            Reaction fuel = reactionCatalog["FUEL"];
+
+            int result = RecurseThroughTree(fuel, reactionCatalog);
+
+            return result;
+            /*
             int totalAmountsOre = 0;
 
             Queue<ReactionStep> queue = new Queue<ReactionStep>();
@@ -63,6 +69,30 @@ namespace AdventOfCode2019.Fourteen
             } while (queue.Any());
 
             return totalAmountsOre;
+            */
+        }
+        // current = fuel, amount = 1
+        public int RecurseThroughTree(Reaction current, Dictionary<string, Reaction> reactionCatalog)
+        {
+            if (current.Outputs.Count == 0)
+                return current.Amount;
+
+            int runningTotal = 0;
+            // CA, 4, BC 3, AB 2
+            foreach (var child in current.Outputs)
+            {
+                if (!reactionCatalog.ContainsKey(child.Key))
+                    return child.Value.Amount;
+
+                var childCatalogEntry = reactionCatalog[child.Key];
+                decimal divided = child.Value.Amount / childCatalogEntry.Amount;
+                int numberOfTimesToRun = decimal.ToInt32(Math.Ceiling(divided));
+
+                for (int i = 0; i < numberOfTimesToRun; i++)
+                    runningTotal += RecurseThroughTree(childCatalogEntry, reactionCatalog);
+            }
+
+            return runningTotal;
         }
 
         private Dictionary<string, Reaction> GetReactions(string filePath)
