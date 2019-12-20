@@ -65,6 +65,8 @@
     <Compile Include="Fifteen\RepairBotNode.cs" />
     <Compile Include="Five\DayFive.cs" />
     <Compile Include="Fourteen\DayFourteen.cs" />
+    <Compile Include="Fourteen\Reaction.cs" />
+    <Compile Include="Fourteen\ReactionTopographicalSorter.cs" />
     <Compile Include="Four\AdjacentDigitsDoNotDecrease.cs" />
     <Compile Include="Four\CorrectDigits.cs" />
     <Compile Include="Four\DayFour.cs" />
