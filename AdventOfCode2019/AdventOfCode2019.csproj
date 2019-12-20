@@ -85,6 +85,7 @@
     <Compile Include="IntCodeComputer\Instructions\StoreIfEqualTo.cs" />
     <Compile Include="IntCodeComputer\Instructions\StoreIfLessThan.cs" />
     <Compile Include="LastYearOne\LastYearDayOne.cs" />
+    <Compile Include="Nineteen\DayNineteen.cs" />
     <Compile Include="Nine\DayNine.cs" />
     <Compile Include="One\DayOne.cs" />
     <Compile Include="Program.cs" />

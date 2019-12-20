@@ -8,7 +8,7 @@ namespace AdventOfCode2019.Eighteen
     {
         public string Description()
         {
-            return "Many-Worlds Interpretation";
+            return "Many-Worlds Interpretation [HARD]";
         }
 
         public int SortOrder()
