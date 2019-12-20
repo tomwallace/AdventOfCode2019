@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace AdventOfCode2019.Nineteen
 {
@@ -52,20 +51,15 @@ namespace AdventOfCode2019.Nineteen
 
         public long ClosestPointThatWouldFitSantasShip(string memoryInput)
         {
-            int gridSize = 1000000;
-            //long[,] grid = new long[gridSize,gridSize];
-            long minX = 1;
-            //long innerLoop = 1;
+            int gridSize = int.MaxValue;
 
-            // Need to start at 5 because beginning of grid sometimes has empty rows
-            for (long y = 100000; y < gridSize; y++)
+            // Need to start at least at 5 because beginning of grid sometimes has empty rows
+            // Setting artificially high to make tests go faster, once I had the answer.
+            for (long y = 1050; y < gridSize; y++)
             {
-                //string printOutput = "";
+                long minX = 0;
                 bool encounteredEdge = false;
                 long innerLoop = minX - 2 < 0 ? 0 : minX - 2;
-                minX = 0;
-
-                
 
                 for (long x = innerLoop; x < gridSize; x++)
                 {
@@ -75,72 +69,42 @@ namespace AdventOfCode2019.Nineteen
 
                     long result = computer.GetDiagnosticCode();
 
-                    // first encountering edge
+                    // First encountering edge
                     if (result == 1)
                     {
-                        // TODO: Change to just check the corners
-                        // top right
-                        input = new[] {x + 99, y};
+                        if (!encounteredEdge)
+                        {
+                            minX = x;
+                            encounteredEdge = true;
+                        }
+
+                        // Top right
+                        input = new[] { x + 99, y };
                         IntCodeComputer.IntCodeComputer tr = new IntCodeComputer.IntCodeComputer(memoryInput, input);
                         tr.ProcessInstructions();
                         bool topRight = tr.GetDiagnosticCode() == 1;
 
-                        // bottom left
+                        // Bottom left
                         input = new[] { x, y + 99 };
                         IntCodeComputer.IntCodeComputer bl = new IntCodeComputer.IntCodeComputer(memoryInput, input);
                         bl.ProcessInstructions();
                         bool bottomLeft = bl.GetDiagnosticCode() == 1;
 
-                        /*
-                        // bottom right
-                        input = new[] { x + 100, y + 100 };
-                        computer.SetInput(input);
-                        computer.ClearOutput();
-                        computer.ProcessInstructions();
-                        bool bottomRight = computer.GetDiagnosticCode() == 1;
-                        */
+                        // If both are satisfied, then we can exit
                         if (topRight && bottomLeft)
                             return x * 10000 + y;
-
-                        // Otherwise, exit out
-                        minX = x;
-                        x = gridSize;
                     }
 
-                    // encountering trailing edge
-                    /*
                     if (result == 0 && encounteredEdge)
                     {
-                        long maxX = x;
-
-                        // Is it 100?
-                        if ((maxX - minX) == 100)
-                        {
-                            // Now check if "bottom" of square is valid
-                            long[] bottomCheckInput = new[] { minX, y + 100 };
-                            IntCodeComputer.IntCodeComputer bottomCheckComputer = new IntCodeComputer.IntCodeComputer(memoryInput, bottomCheckInput);
-                            bottomCheckComputer.ProcessInstructions();
-                            long bottomResult = bottomCheckComputer.GetDiagnosticCode();
-
-                             if (bottomResult == 1)
-                                 return minX * 10000 + y;
-                        }
-
-                        // Otherwise, exit out
+                        encounteredEdge = false;
+                        // Exit out of this row, as the rest of the elements in the row cannot succeed
                         x = gridSize;
                     }
-                    */
-
-                    //grid[x, y] = result;
-
-                    //string printThis = result == 1 ? "#" : ".";
-                    //printOutput = $"{printOutput}{printThis}";
                 }
-                
-                //Debug.WriteLine(printOutput);
             }
 
-            // should never get here
+            // Should never get here
             throw new ArgumentException("Should never get to the end of this loop");
         }
     }

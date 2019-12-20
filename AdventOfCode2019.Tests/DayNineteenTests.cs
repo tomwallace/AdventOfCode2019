@@ -14,15 +14,13 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("176", result);
         }
 
-        // 3930687 = too low
-        // 3970694 = too low
         [Fact]
         public void PartB_Actual()
         {
             var sut = new DayNineteen();
             var result = sut.PartB();
 
-            Assert.Equal("-1", result);
+            Assert.Equal("6751081", result);
         }
     }
 }
