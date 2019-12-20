@@ -27,10 +27,10 @@ namespace AdventOfCode2019.Twelve
 
         public string PartB()
         {
-            string filePath = @"Ten\DayTenInput.txt";
-            //int destroyed = RunAsteroidRoutine(filePath, 200);
+            string filePath = @"Twelve\DayTwelveInput.txt";
+            var calculation = StepsUntilPositionsRepeated(filePath);
 
-            return ""; //destroyed.ToString();
+            return calculation.ToString();
         }
 
         public int CalculateTotalSystemEnergy(string filePath, int timeSteps)
@@ -62,11 +62,14 @@ namespace AdventOfCode2019.Twelve
             return totalSystemEnergy;
         }
 
-        public long StepsUntilPositionsRepeated(string filePath)
+        public double StepsUntilPositionsRepeated(string filePath)
         {
             long stepCounter = 0;
             int numberDuplicatedMoons = 0;
             List<Moon> moons = CreateMoons(filePath);
+            long minX = -1;
+            long minY = -1;
+            long minZ = -1;
 
             // TODO: Remove code duplication through private method
             do
@@ -89,91 +92,31 @@ namespace AdventOfCode2019.Twelve
                     current.Move(stepCounter);
                 }
 
+                //Can't take credit for this
+                //Planets move in symetrical cycles which means their velocity will reach zero at half the number of steps it'll take to get back to their original position.
+                if (minX == -1 && moons.All(m => m.GetVelocity().X == 0))
+                    minX = stepCounter + 1;
+                if (minY == -1 && moons.All(m => m.GetVelocity().Y == 0))
+                    minY = stepCounter + 1;
+                if (minZ == -1 && moons.All(m => m.GetVelocity().Z == 0))
+                    minZ = stepCounter + 1;
+
                 stepCounter++;
+            } while (minX == -1 || minY == -1 || minZ == -1);
 
-                numberDuplicatedMoons = moons.Count(m => m.FirstStepDuplicated() > -1);
-
-            } while (numberDuplicatedMoons < moons.Count);
-
-            // TODO: Return here and figure out way to get common multiplier
-            long[] firstDuplicates = moons.Select(m => m.FirstStepDuplicated()).ToArray();
-
-            return FindSmallestNumberAllDivideWithoutRemainder(firstDuplicates);
-            //var result = findGCD(firstDuplicates, moons.Count);
-            //var lcm = findlcm(firstDuplicates, moons.Count);
-            //return stepCounter;
+            return (LCM(minX, LCM(minY, minZ)) * 2);
         }
 
-        private long FindSmallestNumberAllDivideWithoutRemainder(long[] firstDuplicates)
+        private double GCD(double a, double b)
         {
-            for (long i = 1; i < long.MaxValue; i++)
-            {
-                if (firstDuplicates.All(d => i % d == 0))
-                    return i;
-            }
-
-            throw new ArgumentException("Arguments do not divide evenly into each other, so coding error");
+            if (a % b == 0) return b;
+            return GCD(b, a % b);
         }
 
-        // Utility function to find 
-        // GCD of 'a' and 'b' 
-        private long gcd(long a, long b)
+        // Calculate the least common multiple
+        private double LCM(double a, double b)
         {
-            if (b == 0)
-                return a;
-            return gcd(b, a % b);
-        }
-
-        // Returns LCM of array elements 
-        private long findlcm(long[] arr, int n)
-        {
-            // Initialize result 
-            long ans = arr[0];
-
-            // ans contains LCM of arr[0], ..arr[i] 
-            // after i'th iteration, 
-            for (int i = 1; i < n; i++)
-                ans = (((arr[i] * ans)) /
-                       (gcd(arr[i], ans)));
-
-            return ans;
-        }
-
-        // Function to return gcd of a and b 
-        /*
-        private long gcd(long a, long b)
-        {
-            if (a == 0)
-                return b;
-            return gcd(b % a, a);
-        }
-        */
-        // Function to find gcd of array of 
-        // numbers 
-        long findGCD(long[] arr, int n)
-        {
-            long result = arr[0];
-            for (int i = 1; i < n; i++)
-            {
-                result = gcd(arr[i], result);
-
-                if (result == 1)
-                {
-                    return 1;
-                }
-            }
-            return result;
-        }
-
-        private string CompositeMoonString(List<Moon> moons)
-        {
-            string composite = "";
-            foreach (Moon moon in moons)
-            {
-                composite = $"{composite}{moon}";
-            }
-
-            return composite;
+            return a * b / GCD(a, b);
         }
 
         private List<Moon> CreateMoons(string filePath)
@@ -228,6 +171,11 @@ namespace AdventOfCode2019.Twelve
             return _position;
         }
 
+        public Dimension GetVelocity()
+        {
+            return _velocity;
+        }
+
         public void Move(long stepNumber)
         {
             _position.X += _velocity.X;
@@ -238,7 +186,7 @@ namespace AdventOfCode2019.Twelve
                 _firstStepDuplicated = stepNumber;
 
             if (_firstStepDuplicated == -1)
-                _previousStates.Add(ToString(),stepNumber);
+                _previousStates.Add(ToString(), stepNumber);
         }
 
         public long FirstStepDuplicated()

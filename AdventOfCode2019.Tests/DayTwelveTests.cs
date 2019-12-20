@@ -16,11 +16,9 @@ namespace AdventOfCode2019.Tests
             Assert.Equal(expected, result);
         }
 
-        // TODO: Come back to, as runs forever now
-        /*
         [Theory]
         [InlineData(@"Twelve\DayTwelveTestInputA.txt", 2772)]
-        //[InlineData(@"Twelve\DayTwelveTestInputB.txt", 4686774924)]
+        [InlineData(@"Twelve\DayTwelveTestInputB.txt", 4686774924)]
         public void StepsUntilPositionsRepeated(string filePath, long expected)
         {
             var sut = new DayTwelve();
@@ -28,7 +26,6 @@ namespace AdventOfCode2019.Tests
 
             Assert.Equal(expected, result);
         }
-        */
 
         [Fact]
         public void PartA_Actual()
@@ -45,7 +42,7 @@ namespace AdventOfCode2019.Tests
             var sut = new DayTwelve();
             var result = sut.PartB();
 
-            Assert.Equal("1110", result);
+            Assert.Equal("318382803780324", result);
         }
     }
 }
