@@ -10,7 +10,7 @@ namespace AdventOfCode2019.Sixteen
         
         public string Description()
         {
-            return "Flawed Frequency Transmission";
+            return "Flawed Frequency Transmission [HARD]";
         }
 
         public int SortOrder()
