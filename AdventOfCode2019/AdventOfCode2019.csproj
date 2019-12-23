@@ -107,6 +107,8 @@
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Twelve\DayTwelve.cs" />
+    <Compile Include="TwentyOne\DayTwentyOne.cs" />
+    <Compile Include="TwentyTwo\DayTwentyTwo.cs" />
     <Compile Include="Twenty\DayTwenty.cs" />
     <Compile Include="Two\DayTwo.cs" />
     <Compile Include="IntCodeComputer\IntCodeComputer.cs" />
@@ -233,6 +235,21 @@
     <Content Include="Twelve\DayTwelveTestInputB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TwentyTwo\DayTwentyTwoInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyTwo\DayTwentyTwoTestInputA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyTwo\DayTwentyTwoTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyTwo\DayTwentyTwoTestInputC.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyTwo\DayTwentyTwoTestInputD.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Twenty\DayTwentyInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -240,6 +257,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Twenty\DayTwentyTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Twenty\DayTwentyTestInputC.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
