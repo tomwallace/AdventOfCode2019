@@ -97,6 +97,14 @@ namespace AdventOfCode2019.IntCodeComputer
             _inputPointer = 0;
         }
 
+        public void AddInput(long input)
+        {
+            var temp = _input.ToList();
+            temp.Add(input);
+
+            _input = temp.ToArray();
+        }
+
         // Working with Output
         public long GetDiagnosticCode()
         {
