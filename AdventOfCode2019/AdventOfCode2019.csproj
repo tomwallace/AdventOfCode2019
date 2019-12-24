@@ -36,6 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,9 +108,15 @@
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Twelve\DayTwelve.cs" />
+    <Compile Include="TwentyFour\DayTwentyFour.cs" />
     <Compile Include="TwentyOne\DayTwentyOne.cs" />
     <Compile Include="TwentyTwo\DayTwentyTwo.cs" />
+    <Compile Include="Twenty\Coord.cs" />
     <Compile Include="Twenty\DayTwenty.cs" />
+    <Compile Include="Twenty\DonutMaze.cs" />
+    <Compile Include="Twenty\DonutMazeState.cs" />
+    <Compile Include="Twenty\MapperDto.cs" />
+    <Compile Include="Twenty\Teleporter.cs" />
     <Compile Include="Two\DayTwo.cs" />
     <Compile Include="IntCodeComputer\IntCodeComputer.cs" />
     <Compile Include="Utility\FileUtility.cs" />
@@ -233,6 +240,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Twelve\DayTwelveTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyFour\DayTwentyFourInput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyFour\DayTwentyFourTestInputA.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TwentyTwo\DayTwentyTwoInput.txt">

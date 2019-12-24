@@ -1,6 +1,8 @@
-﻿using AdventOfCode2019.Utility;
+﻿using System;
+using AdventOfCode2019.Utility;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace AdventOfCode2019.TwentyTwo
 {
@@ -8,7 +10,7 @@ namespace AdventOfCode2019.TwentyTwo
     {
         public string Description()
         {
-            return "Slam Shuffle";
+            return "Slam Shuffle [HARD]";
         }
 
         public int SortOrder()
@@ -27,10 +29,102 @@ namespace AdventOfCode2019.TwentyTwo
 
         public string PartB()
         {
-            string filePath = @"Twenty\DayTwentyInput.txt";
-            //int result = FindFewestStepsInMaze(filePath, true);
-            return ""; //result.ToString();
+            string filePath = @"TwentyTwo\DayTwentyTwoInput.txt";
+            var result = RunPartB(filePath);
+            return result.ToString();
         }
+
+        // The math for this problem is way above my understanding, so I grabbed the following solution
+        // from the Reddit thread
+        // TODO: Review this against https://github.com/kbmacneal/adv_of_code_2019/blob/3bdc583ea5620296e187a076038ddde17e526abd/days/22.cs
+        public BigInteger RunPartB(string filePath)
+        {
+            List<string> fileLines = FileUtility.ParseFileToList(filePath, line => line);
+
+            BigInteger size = 119315717514047;
+            BigInteger iter = 101741582076661;
+            BigInteger position = 2020;
+            BigInteger offset_diff = 0;
+            BigInteger increment_mul = 1;
+
+            foreach (var line in fileLines)
+            {
+                RunP2(ref increment_mul, ref offset_diff, size, line);
+            }
+
+            IncrementOffset incOff = Getseq(iter, increment_mul, offset_diff, size);
+
+            var card = Get(incOff.Offset, incOff.Increment, 2020, size);
+            return card;
+        }
+
+        private void RunP2(ref BigInteger inc_mul, ref BigInteger offset_diff, BigInteger size, string line)
+        {
+            if (line.StartsWith("cut"))
+            {
+                offset_diff += Int32.Parse(line.Split(' ').Last()) * inc_mul;
+            }
+            else if (line == "deal into new stack")
+            {
+                inc_mul *= -1;
+                offset_diff += inc_mul;
+            }
+            else
+            {
+                var num = Int32.Parse(line.Split(' ').Last());
+
+                var temp = TBI(num);
+                temp = Inv(temp, size);
+                inc_mul *= temp;
+            }
+
+            inc_mul = Mod(inc_mul,size);
+            offset_diff = Mod(offset_diff, size);
+        }
+
+        private BigInteger Mod(BigInteger x, BigInteger m)
+        {
+            return (x % m + m) % m;
+        }
+
+        private BigInteger Inv(BigInteger num, BigInteger size)
+        {
+            return Mpow(num, size - 2, size);
+        }
+
+        private BigInteger Get(BigInteger offset, BigInteger increment, BigInteger i, BigInteger size)
+        {
+            return (offset + i * increment) % size;
+        }
+
+        private IncrementOffset Getseq(BigInteger iterations, BigInteger inc_mul, BigInteger offset_diff, BigInteger size)
+        {
+            var increment = Mpow(inc_mul,iterations, size);
+
+            var offset = offset_diff * (1 - increment) * ((1 - inc_mul) % size);
+            offset = Inv(offset, size);
+
+            offset %= size;
+
+            return new IncrementOffset() {Increment = increment, Offset = offset};
+        }
+
+        private BigInteger TBI(int num)
+        {
+            return new BigInteger(num);
+        }
+
+        private BigInteger Mpow(BigInteger bigInteger, BigInteger pow, BigInteger mod)
+        {
+            return BigInteger.ModPow(bigInteger, pow, mod);
+        }
+
+    }
+
+    public class IncrementOffset
+    {
+        public BigInteger Increment { get; set; }
+        public BigInteger Offset { get; set; }
     }
 
     public class SpaceCardShuffler
