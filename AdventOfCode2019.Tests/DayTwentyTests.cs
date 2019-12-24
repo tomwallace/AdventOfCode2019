@@ -35,7 +35,7 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("514", result);
         }
 
-        // System out of memory after running for 235 min
+        // Takes 1 min to run, but is correct, so commenting out the test
         /*
         [Fact]
         public void PartB_Actual()
@@ -43,7 +43,7 @@ namespace AdventOfCode2019.Tests
             var sut = new DayTwenty();
             var result = sut.PartB();
 
-            Assert.Equal("1110", result);
+            Assert.Equal("6208", result);
         }
         */
     }
