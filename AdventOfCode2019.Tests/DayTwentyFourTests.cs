@@ -15,6 +15,16 @@ namespace AdventOfCode2019.Tests
             Assert.Equal(expected, result);
         }
 
+        [Theory]
+        [InlineData(@"TwentyFour\DayTwentyFourTestInputA.txt", 99)]
+        public void CountBugsAfterIterations(string filePath, int expected)
+        {
+            var sut = new DayTwentyFour();
+            var result = sut.CountBugsAfterIterations(filePath, 10);
+
+            Assert.Equal(expected, result);
+        }
+
         [Fact]
         public void PartA_Actual()
         {
@@ -30,7 +40,7 @@ namespace AdventOfCode2019.Tests
             var sut = new DayTwentyFour();
             var result = sut.PartB();
 
-            Assert.Equal("-1", result);
+            Assert.Equal("2023", result);
         }
     }
 }

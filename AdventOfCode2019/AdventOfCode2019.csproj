@@ -108,6 +108,7 @@
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Twelve\DayTwelve.cs" />
+    <Compile Include="TwentyFour\BugPlanet.cs" />
     <Compile Include="TwentyFour\DayTwentyFour.cs" />
     <Compile Include="TwentyOne\DayTwentyOne.cs" />
     <Compile Include="TwentyTwo\DayTwentyTwo.cs" />
