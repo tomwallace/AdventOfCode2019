@@ -105,6 +105,11 @@ namespace AdventOfCode2019.IntCodeComputer
             _input = temp.ToArray();
         }
 
+        public int GetInputSize()
+        {
+            return _input.Length;
+        }
+
         // Working with Output
         public long GetDiagnosticCode()
         {

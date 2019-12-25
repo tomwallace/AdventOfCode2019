@@ -112,6 +112,8 @@
     <Compile Include="TwentyFour\DayTwentyFour.cs" />
     <Compile Include="TwentyOne\DayTwentyOne.cs" />
     <Compile Include="TwentyThree\DayTwentyThree.cs" />
+    <Compile Include="TwentyThree\Network.cs" />
+    <Compile Include="TwentyThree\Packet.cs" />
     <Compile Include="TwentyTwo\DayTwentyTwo.cs" />
     <Compile Include="Twenty\Coord.cs" />
     <Compile Include="Twenty\DayTwenty.cs" />

@@ -20,7 +20,7 @@ namespace AdventOfCode2019.Tests
             var sut = new DayTwentyThree();
             var result = sut.PartB();
 
-            Assert.Equal("-1", result);
+            Assert.Equal("17091", result);
         }
     }
 }
