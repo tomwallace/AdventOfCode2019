@@ -4,7 +4,7 @@
     {
         public string Description()
         {
-            return "Springdroid Adventure [IntCodeComputer]";
+            return "Springdroid Adventure [ACII IntCodeComputer]";
         }
 
         public int SortOrder()
@@ -12,19 +12,47 @@
             return 21;
         }
 
-        // TODO: Actually attempt Day 21 and make tests
         public string PartA()
         {
-            string filePath = @"Twenty\DayTwentyInput.txt";
-            //int result = FindFewestStepsInMaze(filePath, false);
-            return ""; //result.ToString();
+            string filePath = @"TwentyOne\DayTwentyOneInput.txt";
+
+            SpringDroid springDroid = new SpringDroid(filePath);
+
+            string inputMultiLine = @"OR A J
+AND B J
+AND C J
+NOT J J
+AND D J
+WALK
+";
+
+            long result = springDroid.Activate(inputMultiLine);
+
+            return result.ToString();
         }
 
         public string PartB()
         {
-            string filePath = @"Twenty\DayTwentyInput.txt";
-            //int result = FindFewestStepsInMaze(filePath, true);
-            return ""; //result.ToString();
+            string filePath = @"TwentyOne\DayTwentyOneInput.txt";
+
+            SpringDroid springDroid = new SpringDroid(filePath);
+
+            string inputMultiLine = @"OR A J
+AND B J
+AND C J
+NOT J J
+AND D J
+OR I T
+OR F T
+AND E T
+OR H T
+AND T J
+RUN
+";
+
+            long result = springDroid.Activate(inputMultiLine);
+
+            return result.ToString();
         }
     }
 }

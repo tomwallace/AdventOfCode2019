@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2019.IntCodeComputer.Instructions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AdventOfCode2019.IntCodeComputer
@@ -104,10 +105,15 @@ namespace AdventOfCode2019.IntCodeComputer
 
             _input = temp.ToArray();
         }
-
-        public int GetInputSize()
+        
+        public void SetInputFromMultiLineAscii(string multiLine)
         {
-            return _input.Length;
+            // Note, must end the last line with a carriage return to get to work correctly
+            char[] chars = multiLine.Replace(Environment.NewLine, "" + (char)10).ToCharArray();
+            List<long> list = chars.Select(c => (long)c).ToList();
+
+            _input = list.ToArray();
+            _inputPointer = 0;
         }
 
         // Working with Output
@@ -165,6 +171,22 @@ namespace AdventOfCode2019.IntCodeComputer
             } while (!finished);
 
             return 1;
+        }
+
+        // Prints the current output, translating each character into ASCII
+        public void PrintAsciiOutput()
+        {
+            Debug.WriteLine("Printing Output ---------------------------");
+            Debug.WriteLine("");
+
+            foreach (long unicode in _output)
+            {
+                char character = (char)unicode;
+                Debug.Write(character.ToString());
+            }
+
+            Debug.WriteLine("");
+            Debug.WriteLine("End Output ---------------------------");
         }
 
         private InstructionDto MapInstructionDto(long operationValue)
