@@ -71,7 +71,7 @@ namespace AdventOfCode2019.Seventeen
         public long GetOutputAfterTraversal(string memoryInput)
         {
             // TODO: I have triple checked these directions and they are right, but my solution still is incorrect.
-            
+            // TODO: And does not even seem to progress
             /*List<long> inputs = ConvertStringToAscii("A,B,A,B,C,C,D,A,B,C");
             inputs.AddRange(ConvertStringToAscii("L,12,L,10,R,8"));
             inputs.AddRange(ConvertStringToAscii("L,12,R,8,R,10,R,12"));
