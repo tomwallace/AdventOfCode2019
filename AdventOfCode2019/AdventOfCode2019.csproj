@@ -108,6 +108,7 @@
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Twelve\DayTwelve.cs" />
+    <Compile Include="TwentyFive\DayTwentyFive.cs" />
     <Compile Include="TwentyFour\BugPlanet.cs" />
     <Compile Include="TwentyFour\DayTwentyFour.cs" />
     <Compile Include="TwentyOne\DayTwentyOne.cs" />
@@ -245,6 +246,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Twelve\DayTwelveTestInputB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TwentyFive\DayTwentyFiveInput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TwentyFour\DayTwentyFourInput.txt">

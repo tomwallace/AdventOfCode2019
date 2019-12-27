@@ -174,19 +174,32 @@ namespace AdventOfCode2019.IntCodeComputer
         }
 
         // Prints the current output, translating each character into ASCII
-        public void PrintAsciiOutput()
+        public void PrintAsciiOutput(bool useConsole = false)
         {
-            Debug.WriteLine("Printing Output ---------------------------");
-            Debug.WriteLine("");
-
-            foreach (long unicode in _output)
+            if (useConsole)
             {
-                char character = (char)unicode;
-                Debug.Write(character.ToString());
-            }
+                foreach (long unicode in _output)
+                {
+                    char character = (char)unicode;
+                    System.Console.Write(character.ToString());
+                }
 
-            Debug.WriteLine("");
-            Debug.WriteLine("End Output ---------------------------");
+                System.Console.WriteLine("");
+            }
+            else
+            {
+                Debug.WriteLine("Printing Output ---------------------------");
+                Debug.WriteLine("");
+
+                foreach (long unicode in _output)
+                {
+                    char character = (char)unicode;
+                    Debug.Write(character.ToString());
+                }
+
+                Debug.WriteLine("");
+                Debug.WriteLine("End Output ---------------------------");
+            }
         }
 
         private InstructionDto MapInstructionDto(long operationValue)

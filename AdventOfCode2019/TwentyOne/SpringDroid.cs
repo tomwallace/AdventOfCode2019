@@ -22,10 +22,9 @@ namespace AdventOfCode2019.TwentyOne
             _computer.ClearOutput();
             _computer.ProcessInstructions();
 
-            var output = _computer.GetOutput();
             _computer.PrintAsciiOutput();
 
-            return output.Last();
+            return _computer.GetDiagnosticCode();
         }
     }
 }
