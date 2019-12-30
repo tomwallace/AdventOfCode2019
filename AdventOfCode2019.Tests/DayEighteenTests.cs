@@ -9,8 +9,8 @@ namespace AdventOfCode2019.Tests
         [InlineData(@"Eighteen\DayEighteenTestInputA.txt", 8)]
         [InlineData(@"Eighteen\DayEighteenTestInputB.txt", 86)]
         [InlineData(@"Eighteen\DayEighteenTestInputC.txt", 132)]
-        // does not work [InlineData(@"Eighteen\DayEighteenTestInputD.txt", 136)]
-        // does not work [InlineData(@"Eighteen\DayEighteenTestInputE.txt", 81)]
+        //[InlineData(@"Eighteen\DayEighteenTestInputD.txt", 136)]
+        [InlineData(@"Eighteen\DayEighteenTestInputE.txt", 81)]
         public void FindFewestStepsThroughMap(string filePath, int expected)
         {
             var sut = new DayEighteen();
@@ -18,6 +18,8 @@ namespace AdventOfCode2019.Tests
 
             Assert.Equal(expected, result);
         }
+
+        // TODO: Cannot get example D to work or part a
         /*
         [Fact]
         public void PartA_Actual()
@@ -28,6 +30,7 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("9958", result);
         }
         */
+
         [Fact]
         public void PartB_Actual()
         {

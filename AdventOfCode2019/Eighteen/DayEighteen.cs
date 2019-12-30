@@ -1,4 +1,5 @@
-﻿using AdventOfCode2019.Utility;
+﻿using System;
+using AdventOfCode2019.Utility;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,6 +34,134 @@ namespace AdventOfCode2019.Eighteen
 
         public int FindFewestStepsThroughMap(string filePath)
         {
+            Vault vault = new Vault(filePath);
+            
+            // Get all KeyPaths
+            Dictionary<char, List<KeyPath>> keyPaths = new Dictionary<char, List<KeyPath>>();
+
+            foreach (MapCell start in vault.Keys)
+            {
+                List<KeyPath> list = new List<KeyPath>();
+                
+                foreach (MapCell target in vault.Keys)
+                {
+                    if (start.ToString() == target.ToString())
+                        continue;
+
+                    Queue<Vault> queue = new Queue<Vault>();
+                    Vault v = new Vault(filePath);
+                    v.SetMe(start);
+                    queue.Enqueue(v);
+
+                    do
+                    {
+                        Vault current = queue.Dequeue();
+
+                        if (current.Me.X == target.X && current.Me.Y == target.Y)
+                        {
+                            KeyPath matching = list.FirstOrDefault(l => l.EndKey.Value == target.Value && l.Doors.SetEquals(current.DoorsCrossed));
+                            if (matching != null && matching.Steps < current.Steps)
+                                continue;
+
+                            KeyPath keyPath = new KeyPath();
+                            keyPath.StartKey = start;
+                            keyPath.EndKey = target;
+                            keyPath.Steps = current.Steps;
+                            keyPath.Doors = current.DoorsCrossed;
+
+                            list.Add(keyPath);
+                            continue;
+                        }
+
+                        Vault north = new Vault(current);
+                        if (north.MoveMe(0, 1))
+                            queue.Enqueue(north);
+
+                        Vault east = new Vault(current);
+                        if (east.MoveMe(1, 0))
+                            queue.Enqueue(east);
+
+                        Vault south = new Vault(current);
+                        if (south.MoveMe(0, -1))
+                            queue.Enqueue(south);
+
+                        Vault west = new Vault(current);
+                        if (west.MoveMe(-1, 0))
+                            queue.Enqueue(west);
+
+                    } while (queue.Any());
+                }
+
+                keyPaths.Add(start.Value, list);
+            }
+            
+            // Now work through list and find most ideal path
+            Queue<KeySortStep> solutionQueue = new Queue<KeySortStep>();
+            KeySortStep currentStep = new KeySortStep();
+            currentStep.Current = '@';
+            currentStep.KeysUsed.Add('@');
+
+            int bestSteps = int.MaxValue;
+
+            solutionQueue.Enqueue(currentStep);
+
+            // TODO: Seem to be stuck at only 8 keys used
+            do
+            {
+                currentStep = solutionQueue.Dequeue();
+
+                if (currentStep.StepsTaken >= bestSteps)
+                    continue;
+
+                if (currentStep.KeysUsed.Count == vault.Keys.Count)
+                {
+                    bestSteps = currentStep.StepsTaken;
+                    continue;
+                }
+
+                //if (solutionQueue.Any(e => e.KeysUsed.SetEquals(currentStep.KeysUsed)))
+                //    continue;
+
+                List<KeyPath> possibilities = keyPaths[currentStep.Current]
+                    .Where(k => !currentStep.KeysUsed.Contains(k.EndKey.Value) && k.CanUsePath(currentStep.KeysUsed))
+                    .ToList();
+
+                foreach (var possibility in possibilities)
+                {
+                    KeySortStep newStep = new KeySortStep(currentStep);
+                    newStep.Current = possibility.EndKey.Value;
+                    newStep.KeysUsed.Add(possibility.EndKey.Value);
+                    newStep.StepsTaken += possibility.Steps;
+
+                    solutionQueue.Enqueue(newStep);
+                }
+
+            } while (solutionQueue.Any());
+
+            return bestSteps;
+
+            /*
+            HashSet<char> keysFound = new HashSet<char>() { '@' };
+            int totalSteps = 0;
+            char currentKey = '@';
+
+            do
+            {
+                List<KeyPath> possibilities = keyPaths[currentKey]
+                    .Where(k => !keysFound.Contains(k.EndKey.Value) && k.CanUsePath(keysFound))
+                    .ToList();
+                KeyPath selected = possibilities.OrderBy(k => k.Steps).First();
+
+                totalSteps += selected.Steps;
+                keysFound.Add(selected.EndKey.Value);
+
+                currentKey = selected.EndKey.Value;
+
+            } while (keysFound.Count < vault.Keys.Count);
+
+            return totalSteps;
+            
+            /*
             Queue<Vault> queue = new Queue<Vault>();
             queue.Enqueue(new Vault(filePath));
 
@@ -68,14 +197,58 @@ namespace AdventOfCode2019.Eighteen
                     queue.Enqueue(west);
 
             } while (queue.Any());
+            */
 
-            return bestStepsTaken;
+            // TODO: Fix
+            //return 1000;
         }
     }
+
+    public class KeySortStep
+    {
+        public int StepsTaken { get; set; }
+        public HashSet<char> KeysUsed { get; set; }
+        public char Current { get; set; }
+
+        public KeySortStep()
+        {
+            KeysUsed = new HashSet<char>();
+            StepsTaken = 0;
+        }
+
+        public KeySortStep(KeySortStep existing)
+        {
+            StepsTaken = existing.StepsTaken;
+            Current = existing.Current;
+            KeysUsed = new HashSet<char>(existing.KeysUsed);
+        }
+    }
+
+    public class KeyPath
+    {
+        public MapCell StartKey { get; set; }
+        public MapCell EndKey { get; set; }
+        public int Steps { get; set; }
+        public HashSet<char> Doors { get; set; }
+
+        public KeyPath()
+        {
+            Doors = new HashSet<char>();
+        }
+
+        public bool CanUsePath(HashSet<char> keys)
+        {
+            return Doors.All(d => keys.Any(k => char.ToUpper(k) == d));
+        }
+    }
+
 
     public class Vault
     {
         public MapCell[,] Map { get; set; }
+        public HashSet<MapCell> Keys { get; set; }
+        public HashSet<char> DoorsCrossed { get; set; }
+
         public MapCell Me { get; set; }
         public HashSet<string> StepsVisited { get; set; }
 
@@ -87,6 +260,8 @@ namespace AdventOfCode2019.Eighteen
         {
             List<string> fileLines = FileUtility.ParseFileToList(filePath, line => line);
             StepsVisited = new HashSet<string>();
+            Keys = new HashSet<MapCell>();
+            DoorsCrossed = new HashSet<char>();
 
             int xCount = fileLines[0].Length;
             int yCount = fileLines.Count;
@@ -100,12 +275,16 @@ namespace AdventOfCode2019.Eighteen
                 for (int x = 0; x < xCount; x++)
                 {
                     map[x, y] = new MapCell(chars[x], x, y);
+                    
+                    // TODO: Remove assignment of Me and other dead code
                     if (chars[x] == '@')
                     {
                         Me = new MapCell(chars[x], x, y);
-                        StepsVisited.Add($"{x},{y}");
+                        //StepsVisited.Add($"{x},{y}");
                     }
-                        
+
+                    if (char.IsLower(chars[x]) || chars[x] == '@')
+                        Keys.Add(new MapCell(chars[x], x, y));
                 }
             }
 
@@ -121,6 +300,14 @@ namespace AdventOfCode2019.Eighteen
             Steps = existing.Steps;
             KeysFound = new HashSet<char>(existing.KeysFound);
             StepsVisited = new HashSet<string>(existing.StepsVisited);
+            Keys = new HashSet<MapCell>(existing.Keys);
+            DoorsCrossed = new HashSet<char>(existing.DoorsCrossed);
+        }
+
+        public void SetMe(MapCell me)
+        {
+            Me = me;
+            StepsVisited.Add($"{me.X},{me.Y}");
         }
 
         private MapCell[,] CloneMap(Vault existing)
@@ -167,9 +354,14 @@ namespace AdventOfCode2019.Eighteen
 
             if (!Map[Me.X + x, Me.Y + y].IsPassable(KeysFound))
                 return false;
-            
+
             Me = Map[Me.X + x, Me.Y + y];
+
+            if (Me.IsDoor())
+                DoorsCrossed.Add(Me.Value);
+            /*
             char? keyFound = Me.KeyFound();
+            
             if (keyFound != null)
             {
                 KeysFound.Add(keyFound.Value);
@@ -182,7 +374,7 @@ namespace AdventOfCode2019.Eighteen
                 // Need to reset places been
                 StepsVisited = new HashSet<string>();
             }
-
+            */
             Steps++;
 
             StepsVisited.Add($"{Me.X},{Me.Y}");
@@ -228,9 +420,10 @@ namespace AdventOfCode2019.Eighteen
             if (Value == '#')
                 return false;
 
-            if (Value == '.')
-                return true;
+            //if (Value == '.')
+            return true;
 
+            /*
             // If a door, check for key
             if (IsDoor())
             {
@@ -239,6 +432,7 @@ namespace AdventOfCode2019.Eighteen
 
             // Otherwise, it is a key, so passable
             return true;
+            */
         }
 
         public char? KeyFound()
