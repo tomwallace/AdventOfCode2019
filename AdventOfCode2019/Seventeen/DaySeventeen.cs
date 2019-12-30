@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode2019.Seventeen
@@ -37,7 +35,7 @@ namespace AdventOfCode2019.Seventeen
             computer.ProcessInstructions();
             List<long> output = computer.GetOutput();
 
-            PrintLayout(output);
+            computer.PrintAsciiOutput();
 
             char[,] grid = MakeGrid(output);
 
@@ -70,49 +68,23 @@ namespace AdventOfCode2019.Seventeen
 
         public long GetOutputAfterTraversal(string memoryInput)
         {
-            // TODO: I have triple checked these directions and they are right, but my solution still is incorrect.
-            // TODO: And does not even seem to progress
-            /*List<long> inputs = ConvertStringToAscii("A,B,A,B,C,C,D,A,B,C");
-            inputs.AddRange(ConvertStringToAscii("L,12,L,10,R,8"));
-            inputs.AddRange(ConvertStringToAscii("L,12,R,8,R,10,R,12"));
-            inputs.AddRange(ConvertStringToAscii("L,10,R,12,R,8"));
-            inputs.AddRange(ConvertStringToAscii("R,8,R,10,R,12"));
-            inputs.AddRange(ConvertStringToAscii("y"));
-            */
-
             IntCodeComputer.IntCodeComputer computer = new IntCodeComputer.IntCodeComputer(memoryInput, 0);
             computer.SetMemoryLocation(0, 2);
 
-            string inputMultiLine = @"A,B,A,B,C,C,D,A,B,C
-L,12,L,10,R,8
-L,12,R,8,R,10,R,12
-L,10,R,12,R,8
+            string inputMultiLine = @"A,B,A,B,C,C,B,A,B,C
+L,12,L,10,R,8,L,12
 R,8,R,10,R,12
-y
+L,10,R,12,R,8
+n
 ";
+
             computer.SetInputFromMultiLineAscii(inputMultiLine);
-            
+
             int code = computer.ProcessInstructions();
             computer.PrintAsciiOutput();
 
-            //PrintLayout(computer.GetOutput());
-
             long output = computer.GetDiagnosticCode();
             return output;
-        }
-
-        private List<long> ConvertStringToAscii(string line)
-        {
-            char[] split = line.ToCharArray();
-            List<long> list = split.Select(c => (long)c).ToList();
-
-            if (list.Count > 20)
-                throw new ArgumentException("Each line of program can only be up to 20 instructions long.");
-
-            // Add the line break
-            list.Add(10);
-
-            return list;
         }
 
         private char? FindChar(char[,] grid, int x, int y)
@@ -124,44 +96,6 @@ y
                 return null;
 
             return grid[x, y];
-        }
-
-        private void PrintLayout(List<long> output)
-        {
-            Debug.WriteLine("Printing Layout ---------------------------");
-            Debug.WriteLine("");
-
-            foreach (long unicode in output)
-            {
-                char character = (char)unicode;
-                Debug.Write(character.ToString());
-            }
-
-            Debug.WriteLine("");
-            Debug.WriteLine("End Layout ---------------------------");
-        }
-
-        private void PrintLayout(char[,] grid)
-        {
-            // TODO: Need to fix the output, as it is inversed again
-
-            Debug.WriteLine("Printing Layout ---------------------------");
-            Debug.WriteLine("");
-
-            for (int colPointer = grid.GetLength(1) - 1; colPointer >= 0; colPointer--)
-            {
-                string row = "";
-
-                for (int rowPointer = grid.GetLength(0) - 1; rowPointer >= 0; rowPointer--)
-                {
-                    row = $"{row}{grid[colPointer, rowPointer]}";
-                }
-
-                Debug.WriteLine(row);
-            }
-
-            Debug.WriteLine("");
-            Debug.WriteLine("End Layout ---------------------------");
         }
 
         private char[,] MakeGrid(List<long> output)
@@ -188,8 +122,6 @@ y
                     x++;
                 }
             }
-
-            //PrintLayout(grid);
 
             return grid;
         }

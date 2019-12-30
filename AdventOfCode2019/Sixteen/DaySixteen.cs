@@ -59,7 +59,6 @@ namespace AdventOfCode2019.Sixteen
                     int repeatLoop = 1;
                     for (int i = 0; i < signal.Length; i++)
                     {
-                        // TODO: Fix the repeating pattern, as accurate for first run, but does not iterate then
                         if (repeatLoop > outerSignal)
                         {
                             repeatingPointer++;

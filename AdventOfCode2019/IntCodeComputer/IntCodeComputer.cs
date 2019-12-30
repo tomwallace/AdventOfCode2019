@@ -80,7 +80,6 @@ namespace AdventOfCode2019.IntCodeComputer
             return _memory[location];
         }
 
-        // TODO: Remove if not necessary
         public Dictionary<long, long> CloneMemory()
         {
             return _memory.ToDictionary(m => m.Key, m => m.Value);

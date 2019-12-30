@@ -108,6 +108,8 @@
     <Compile Include="Three\DayThree.cs" />
     <Compile Include="Three\Wire.cs" />
     <Compile Include="Twelve\DayTwelve.cs" />
+    <Compile Include="Twelve\Dimension.cs" />
+    <Compile Include="Twelve\Moon.cs" />
     <Compile Include="TwentyFive\DayTwentyFive.cs" />
     <Compile Include="TwentyFour\BugPlanet.cs" />
     <Compile Include="TwentyFour\DayTwentyFour.cs" />
