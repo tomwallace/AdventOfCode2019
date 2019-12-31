@@ -35,6 +35,7 @@ namespace AdventOfCode2019.Eighteen
         public int FindFewestStepsThroughMap(string filePath)
         {
             Vault vault = new Vault(filePath);
+            int numberOfKeys = vault.Keys.Count;
             
             // Get all KeyPaths
             Dictionary<char, List<KeyPath>> keyPaths = new Dictionary<char, List<KeyPath>>();
@@ -99,7 +100,7 @@ namespace AdventOfCode2019.Eighteen
             Queue<KeySortStep> solutionQueue = new Queue<KeySortStep>();
             KeySortStep currentStep = new KeySortStep();
             currentStep.Current = '@';
-            currentStep.KeysUsed.Add('@');
+            currentStep.KeysPossessed.Add('@');
 
             int bestSteps = int.MaxValue;
 
@@ -113,24 +114,25 @@ namespace AdventOfCode2019.Eighteen
                 if (currentStep.StepsTaken >= bestSteps)
                     continue;
 
-                if (currentStep.KeysUsed.Count == vault.Keys.Count)
+                if (currentStep.KeysPossessed.Count == numberOfKeys)
                 {
                     bestSteps = currentStep.StepsTaken;
                     continue;
                 }
 
-                //if (solutionQueue.Any(e => e.KeysUsed.SetEquals(currentStep.KeysUsed)))
+                // TODO: This does not work for all solutions, so need to revisit optimization
+                //if (solutionQueue.Any(e => e.KeysPossessed.SetEquals(currentStep.KeysPossessed)))
                 //    continue;
 
                 List<KeyPath> possibilities = keyPaths[currentStep.Current]
-                    .Where(k => !currentStep.KeysUsed.Contains(k.EndKey.Value) && k.CanUsePath(currentStep.KeysUsed))
+                    .Where(k => !currentStep.KeysPossessed.Contains(k.EndKey.Value) && k.CanUsePath(currentStep.KeysPossessed))
                     .ToList();
 
                 foreach (var possibility in possibilities)
                 {
                     KeySortStep newStep = new KeySortStep(currentStep);
                     newStep.Current = possibility.EndKey.Value;
-                    newStep.KeysUsed.Add(possibility.EndKey.Value);
+                    newStep.KeysPossessed.Add(possibility.EndKey.Value);
                     newStep.StepsTaken += possibility.Steps;
 
                     solutionQueue.Enqueue(newStep);
@@ -207,12 +209,12 @@ namespace AdventOfCode2019.Eighteen
     public class KeySortStep
     {
         public int StepsTaken { get; set; }
-        public HashSet<char> KeysUsed { get; set; }
+        public HashSet<char> KeysPossessed { get; set; }
         public char Current { get; set; }
 
         public KeySortStep()
         {
-            KeysUsed = new HashSet<char>();
+            KeysPossessed = new HashSet<char>();
             StepsTaken = 0;
         }
 
@@ -220,7 +222,7 @@ namespace AdventOfCode2019.Eighteen
         {
             StepsTaken = existing.StepsTaken;
             Current = existing.Current;
-            KeysUsed = new HashSet<char>(existing.KeysUsed);
+            KeysPossessed = new HashSet<char>(existing.KeysPossessed);
         }
     }
 
@@ -238,7 +240,7 @@ namespace AdventOfCode2019.Eighteen
 
         public bool CanUsePath(HashSet<char> keys)
         {
-            return Doors.All(d => keys.Any(k => char.ToUpper(k) == d));
+            return Doors.All(d => keys.Contains(char.ToLower(d)));
         }
     }
 
