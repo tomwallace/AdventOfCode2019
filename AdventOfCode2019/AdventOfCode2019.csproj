@@ -118,7 +118,13 @@
     <Compile Include="TwentyThree\DayTwentyThree.cs" />
     <Compile Include="TwentyThree\Network.cs" />
     <Compile Include="TwentyThree\Packet.cs" />
+    <Compile Include="TwentyTwo\CutCards.cs" />
     <Compile Include="TwentyTwo\DayTwentyTwo.cs" />
+    <Compile Include="TwentyTwo\DayTwentyTwoOther.cs" />
+    <Compile Include="TwentyTwo\IDeckModification.cs" />
+    <Compile Include="TwentyTwo\IncrementCards.cs" />
+    <Compile Include="TwentyTwo\NewStack.cs" />
+    <Compile Include="TwentyTwo\SpaceCardShuffler.cs" />
     <Compile Include="Twenty\Coord.cs" />
     <Compile Include="Twenty\DayTwenty.cs" />
     <Compile Include="Twenty\DonutMaze.cs" />

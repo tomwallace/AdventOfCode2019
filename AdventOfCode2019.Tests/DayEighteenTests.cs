@@ -6,11 +6,11 @@ namespace AdventOfCode2019.Tests
     public class DayEighteenTests
     {
         [Theory]
-        //[InlineData(@"Eighteen\DayEighteenTestInputA.txt", 8)]
-        //[InlineData(@"Eighteen\DayEighteenTestInputB.txt", 86)]
-        //[InlineData(@"Eighteen\DayEighteenTestInputC.txt", 132)]
-        [InlineData(@"Eighteen\DayEighteenTestInputD.txt", 136)]
-        //[InlineData(@"Eighteen\DayEighteenTestInputE.txt", 81)]
+        [InlineData(@"Eighteen\DayEighteenTestInputA.txt", 8)]
+        [InlineData(@"Eighteen\DayEighteenTestInputB.txt", 86)]
+        [InlineData(@"Eighteen\DayEighteenTestInputC.txt", 132)]
+        //[InlineData(@"Eighteen\DayEighteenTestInputD.txt", 136)]
+        [InlineData(@"Eighteen\DayEighteenTestInputE.txt", 81)]
         public void FindFewestStepsThroughMap(string filePath, int expected)
         {
             var sut = new DayEighteen();

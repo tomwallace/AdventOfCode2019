@@ -68,15 +68,13 @@ namespace AdventOfCode2019.Tests
             Assert.Equal("6850", result);
         }
 
-        // TODO: I have no idea how to run the code that many times in a row.  There must be a short cut
-        // 54509282372634 is too high
         [Fact]
         public void PartB_Actual()
         {
             var sut = new DayTwentyTwo();
             var result = sut.PartB();
 
-            Assert.Equal("-1", result);
+            Assert.Equal("13224103523662", result);
         }
     }
 }
