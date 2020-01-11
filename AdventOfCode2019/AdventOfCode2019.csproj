@@ -54,7 +54,7 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
-    <Compile Include="Eighteen\DayEighteen.cs" />
+    <Compile Include="Eighteen\DayEighteenNew.cs" />
     <Compile Include="Eight\DayEight.cs" />
     <Compile Include="Eight\Image.cs" />
     <Compile Include="Eight\ImageLayer.cs" />
@@ -155,6 +155,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Eighteen\DayEighteenTestInputE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputF.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputG.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputH.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Eighteen\DayEighteenTestInputI.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Eight\DayEightInput.txt">
