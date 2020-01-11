@@ -54,7 +54,13 @@
     <Compile Include="Console\Commands\RunCommand.cs" />
     <Compile Include="Console\Commands\VersionCommand.cs" />
     <Compile Include="Console\ICommand.cs" />
-    <Compile Include="Eighteen\DayEighteenNew.cs" />
+    <Compile Include="Eighteen\DayEighteen.cs" />
+    <Compile Include="Eighteen\Key.cs" />
+    <Compile Include="Eighteen\LocationIndex.cs" />
+    <Compile Include="Eighteen\MapStepState.cs" />
+    <Compile Include="Eighteen\Point.cs" />
+    <Compile Include="Eighteen\PositionIndex.cs" />
+    <Compile Include="Eighteen\RelativeKey.cs" />
     <Compile Include="Eight\DayEight.cs" />
     <Compile Include="Eight\Image.cs" />
     <Compile Include="Eight\ImageLayer.cs" />

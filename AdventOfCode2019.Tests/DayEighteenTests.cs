@@ -14,7 +14,7 @@ namespace AdventOfCode2019.Tests
         [InlineData(@"Eighteen\DayEighteenTestInputE.txt", 81)]
         public async Task FindFewestStepsThroughMap(string filePath, int expected)
         {
-            var sut = new DayEighteenNew();
+            var sut = new DayEighteen();
             var result = await sut.FindFewestStepsThroughMap(filePath);
 
             Assert.Equal(expected, result);
@@ -27,7 +27,7 @@ namespace AdventOfCode2019.Tests
         [InlineData(@"Eighteen\DayEighteenTestInputI.txt", 32)]
         public async Task FindStepsWithMultipleRobots(string filePath, int expected)
         {
-            var sut = new DayEighteenNew();
+            var sut = new DayEighteen();
             var result = await sut.FindStepsWithMultipleRobots(filePath);
 
             Assert.Equal(expected, result);
@@ -36,7 +36,7 @@ namespace AdventOfCode2019.Tests
         [Fact]
         public void PartA_Actual()
         {
-            var sut = new DayEighteenNew();
+            var sut = new DayEighteen();
             var result = sut.PartA();
 
             Assert.Equal("3862", result);
@@ -45,7 +45,7 @@ namespace AdventOfCode2019.Tests
         [Fact]
         public void PartB_Actual()
         {
-            var sut = new DayEighteenNew();
+            var sut = new DayEighteen();
             var result = sut.PartB();
 
             Assert.Equal("1626", result);

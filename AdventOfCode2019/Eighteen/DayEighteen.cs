@@ -8,7 +8,7 @@ namespace AdventOfCode2019.Eighteen
 {
     // I really struggled with this Day and only was able to work through it by consulting
     // the solution found here:  https://adventofcode.com/2019
-    public class DayEighteenNew : IAdventProblemSet
+    public class DayEighteen : IAdventProblemSet
     {
         private int myWidth;
         private int myHeight;
@@ -129,7 +129,6 @@ namespace AdventOfCode2019.Eighteen
         private async Task Backtrack(int[] robotPositions, List<char> keys, Dictionary<int, RelativeKey[]> relativeKeysByPos, Dictionary<string, int> states, int currentDistance = 0)
         {
             if (currentDistance >= myBestDistance) { return; }
-            //if (IsUpdateProgressNeeded()) { await UpdateProgressAsync(states.Count, robotPositions.Length == 1 ? 50000 : 200000); }
             if (keys.Count == myKeyCount && currentDistance < myBestDistance)
             {
                 myBestDistance = currentDistance;
@@ -268,86 +267,6 @@ namespace AdventOfCode2019.Eighteen
             }
 
             return result;
-        }
-    }
-
-    public class Point
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        public Point(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-    }
-
-    public class LocationIndex
-    {
-        public char Location { get; set; }
-        public int Index { get; set; }
-
-        public LocationIndex(char location, int index)
-        {
-            Location = location;
-            Index = index;
-        }
-    }
-
-    public class PositionIndex
-    {
-        public int Position { get; set; }
-        public int Index { get; set; }
-
-        public PositionIndex(int position, int index)
-        {
-            Position = position;
-            Index = index;
-        }
-    }
-
-    public class Key
-    {
-        public char Char { get; }
-        public int Pos { get; }
-        public Dictionary<char, RelativeKey> RelativeKeys { get; }
-
-        public Key(char key, int pos, Dictionary<char, RelativeKey> relativeKeys)
-        {
-            Char = key;
-            Pos = pos;
-            RelativeKeys = relativeKeys;
-        }
-    }
-
-    public class RelativeKey
-    {
-        public char Char { get; }
-        public int Pos { get; }
-        public int Distance { get; }
-        public char[] RequiredKeys { get; }
-
-        public RelativeKey(char key, int pos, int distance, char[] requiredKeys)
-        {
-            Char = key;
-            Pos = pos;
-            Distance = distance;
-            RequiredKeys = requiredKeys;
-        }
-    }
-
-    public class MapStepState
-    {
-        public int Position { get; set; }
-        public int Distance { get; set; }
-        public List<char> Doors { get; set; }
-
-        public MapStepState(int pos, int distance, List<char> doors)
-        {
-            Position = pos;
-            Distance = distance;
-            Doors = doors;
         }
     }
 }
