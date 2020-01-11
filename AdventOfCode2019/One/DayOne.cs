@@ -1,7 +1,6 @@
-﻿using System;
+﻿using AdventOfCode2019.Utility;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using AdventOfCode2019.Utility;
 
 namespace AdventOfCode2019.One
 {
@@ -37,7 +36,7 @@ namespace AdventOfCode2019.One
         {
             decimal dividedMass = mass / 3;
             decimal roundedMass = Math.Floor(dividedMass);
-            return (int) (roundedMass - 2);
+            return (int)(roundedMass - 2);
         }
 
         public int CalculateFuelAccountingForFuelWeight(int mass)

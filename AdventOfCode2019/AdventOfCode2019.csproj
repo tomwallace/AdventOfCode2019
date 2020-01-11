@@ -105,6 +105,9 @@
     <Compile Include="Six\AstralBody.cs" />
     <Compile Include="Six\AstralBodyComparer.cs" />
     <Compile Include="Six\DaySix.cs" />
+    <Compile Include="Ten\Asteroid.cs" />
+    <Compile Include="Ten\AsteroidDistance.cs" />
+    <Compile Include="Ten\BestLocationOutput.cs" />
     <Compile Include="Ten\DayTen.cs" />
     <Compile Include="Thirteen\DayThirteen.cs" />
     <Compile Include="Thirteen\GameBoard.cs" />

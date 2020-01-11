@@ -75,18 +75,5 @@ namespace AdventOfCode2019.Thirteen
 
             return finalScore;
         }
-
-        private Dictionary<string, GamePixel> MakeGameBoard(List<long> intComputerOutput)
-        {
-            Dictionary<string, GamePixel> gameBoard = new Dictionary<string, GamePixel>();
-
-            for (int i = 0; i < intComputerOutput.Count; i += 3)
-            {
-                string key = $"{intComputerOutput[i]},{intComputerOutput[i + 1]}";
-                gameBoard.Add(key, (GamePixel)intComputerOutput[i + 2]);
-            }
-
-            return gameBoard;
-        }
     }
 }
